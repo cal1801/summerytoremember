@@ -1,0 +1,156 @@
+<% content_for :head do %>
+
+<%end%>
+<div class="content row">
+  <div class="col-lg-12" style="margin-top: 25px;">
+    <%=image_tag 's2r', :style => 'max-width: 90vw; max-height: 35vh'%>
+
+    <%=form_tag camps_path, :id => 'SearchForm', :method => 'get' do %>
+      <h1 class="search-prompt">Where do you want to work this summer?</h1>
+
+      <h3 id="state_display">Choose A State</h3>
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="pccca_map"></div>
+        </div>
+      </div>
+
+      <%=hidden_field_tag 'state'%>
+    <%end%>
+  </div>
+</div>
+
+
+<div class="overlay"></div>
+<video id="my-video" class="video" autoplay muted loop>
+  <source src="media/campvideo2.mp4" type="video/mp4">
+</video><!-- /video -->
+
+<%=javascript_include_tag 'raphael-min', 'jquery.usmap'%>
+
+<script>
+  $(document).ready(function() {
+    $('#pccca_map').usmap({
+      'showLabels':false,
+      'stateSpecificStyles': {
+        'CA': {fill: '#CC3433'},
+        'OR': {fill: '#CC3433'},
+        'WA': {fill: '#CC3433'},
+        'ID': {fill: '#CC3433'},
+        'NV': {fill: '#CC3433'},
+        'AK': {fill: '#CC3433'},
+        'HI': {fill: '#CC3433'},
+        'CO': {fill: '#CDCC00'},
+        'MT': {fill: '#CDCC00'},
+        'WY': {fill: '#CDCC00'},
+        'UT': {fill: '#CDCC00'},
+        'AZ': {fill: '#006599'},
+        'NM': {fill: '#006599'},
+        'TX': {fill: '#006599'},
+        'OK': {fill: '#006599'},
+        'AR': {fill: '#006599'},
+        'LA': {fill: '#006599'},
+        'KS': {fill: '#9966FF'},
+        'MO': {fill: '#9966FF'},
+        'IL': {fill: '#9966FF'},
+        'IN': {fill: '#9966FF'},
+        'ND': {fill: '#990033'},
+        'SD': {fill: '#990033'},
+        'NE': {fill: '#990033'},
+        'MN': {fill: '#990033'},
+        'IA': {fill: '#990033'},
+        'WI': {fill: '#990033'},
+        'AL': {fill: '#CD6601'},
+        'MS': {fill: '#CD6601'},
+        'KY': {fill: '#CD6601'},
+        'TN': {fill: '#CD6601'},
+        'MI': {fill: '#336601'},
+        'OH': {fill: '#336601'},
+        'FL': {fill: '#96CA05'},
+        'GA': {fill: '#96CA05'},
+        'SC': {fill: '#96CA05'},
+        'WV': {fill: '#999A01'},
+        'PA': {fill: '#999A01'},
+        'NY': {fill: '#2C0092'},
+        'NJ': {fill: '#2C0092'},
+        'RI': {fill: '#2C0092'},
+        'CT': {fill: '#2C0092'},
+        'MA': {fill: '#2C0092'},
+        'VT': {fill: '#2C0092'},
+        'NH': {fill: '#2C0092'},
+        'ME': {fill: '#2C0092'},
+        'NC': {fill: '#96CA05'},
+        'VA': {fill: '#96CA05'},
+        'DC': {fill: '#96CA05'},
+        'MD': {fill: '#96CA05'},
+        'DE': {fill: '#96CA05'},
+        'BC': {fill: '#6700FF'},
+        'AB': {fill: '#336799'},
+        'SK': {fill: '#9ACCCD'},
+        'MB': {fill: '#9ACCCD'},
+        'ON': {fill: '#99CD00'},
+        'QC': {fill: '#FFCC9A'},
+        'NL': {fill: '#9A0001'},
+        'NS': {fill: '#9A0001'},
+        'NB': {fill: '#9A0001'},
+        'PE': {fill: '#9A0001'},
+      },
+      'stateSpecificLabelBackingStyles': {
+        'DE': {fill: '#96CA05'},
+        'VT': {fill: '#2C0092'},
+        'NH': {fill: '#2C0092'},
+        'MA': {fill: '#2C0092'},
+        'NJ': {fill: '#2C0092'},
+        'RI': {fill: '#2C0092'},
+        'CT': {fill: '#2C0092'},
+        'DC': {fill: '#96CA05'},
+        'MD': {fill: '#96CA05'},
+      },
+      'labelTextStyles': {
+        fill: "#ffffff",
+      },
+      'stateStyles': {
+        fill: "#4ECDC4",
+        stroke: "#41A59B",
+        "stroke-width": 1,
+        "stroke-linejoin": "round",
+        scale: [1, 1]
+      },
+      'stateHoverStyles': {
+        fill: "#FFFFFF",
+        stroke: "#ADCC56",
+        scale: [5, 5]
+      },
+        'labelBackingStyles': {
+        fill: "#4ECDC4",
+        stroke: "#41A59B",
+        "stroke-width": 1,
+        "stroke-linejoin": "round",
+        scale: [1, 1]
+      },
+
+      // The styles for the hover
+      'labelBackingHoverStyles': {
+        fill: "#C7F464",
+        stroke: "#ADCC56",
+      },
+      'labelTextStyles': {
+        fill: "#222",
+        'stroke': 'none',
+        'font-weight': 300,
+        'stroke-width': 0,
+        'font-size': '10px'
+      },
+      // The click action
+      click: function(event, data) {
+        $('#state').val(data.name);
+        $( "#SearchForm" ).submit();
+      },
+
+      mouseover: function(event, data) {
+          $('#state_display')
+            .text("I want to work in: "+data.name)
+      }
+    });
+  });
+</script>
