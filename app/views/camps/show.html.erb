@@ -27,18 +27,22 @@
       </div>
     </div>
     <div class="col-xs-12 camp-container">
-      <<%info = @camp.staff_desc.blank? ? CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').first.description.try(:html_safe) : @camp.staff_desc.html_safe%>
+      <%info = @camp.staff_desc.blank? ? CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').first.description.try(:html_safe) : @camp.staff_desc.html_safe%>
       <p class="description"><%=info%></p>
     </div>
     <div class="col-xs-12 camp-container">
       <div class="row camp-images">
         <%if @camp.pccca_member%>
-          <%images = @camp.images.reject{|i| i.image_type != "str"}.take(3)%>
+          <%images = @camp.images.reject{|i| i.image_type != "s2r"}.take(3)%>
+          <%backup_image = {'1' => 'first','2' => 'first','3' => 'first'}%>
+          <%count=1%>
           <%images.each do |image|%>
+            <%byebug%>
             <div class="col-md-3 camp-photo-wrapper">
               <div style="background-image: url('<%=asset_path image.image_url(:medium)%>');" class="camp-photo">
               </div>
             </div>
+            <%count+=1%>
           <%end%>
         <%end%>
         <div class="col-md-3 website">
