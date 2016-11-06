@@ -33,16 +33,28 @@
     <div class="col-xs-12 camp-container">
       <div class="row camp-images">
         <%if @camp.pccca_member%>
-          <%images = @camp.images.reject{|i| i.image_type != "s2r"}.take(3)%>
-          <%backup_image = {'1' => 'first','2' => 'first','3' => 'first'}%>
-          <%count=1%>
+          <%images = @camp.images.select{|i| i.image_type == "s2r"}.take(3)%>
+          <%counts = 3-images.count%>
+          <%backup_image = {1 => 'first',2 => 'second',3 => 'third'}%>
+          <%(1..counts).each do |count|%>
+            <%if count == 1%>
+              <%byebug%>
+              <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').first%>
+            <%elsif count == 2%>
+              <%byebug%>
+              <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').second%>
+            <%else%>
+              <%byebug%>
+              <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').third%>
+            <%end%>
+          <%end%>
           <%images.each do |image|%>
             <div class="col-md-3 camp-photo-wrapper">
               <div style="background-image: url('<%=asset_path image.image_url(:medium)%>');" class="camp-photo">
               </div>
             </div>
-            <%count+=1%>
           <%end%>
+
         <%end%>
         <div class="col-md-3 website">
           <%url = @camp.web_url.blank? ? @camp.web_url : @camp.staff_url%>
