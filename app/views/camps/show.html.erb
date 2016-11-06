@@ -35,7 +35,6 @@
         <%if @camp.pccca_member%>
           <%images = @camp.images.select{|i| i.image_type == "s2r"}.take(3)%>
           <%counts = 3-images.count%>
-          <%backup_image = {1 => 'first',2 => 'second',3 => 'third'}%>
           <%(1..counts).each do |count|%>
             <%if count == 1%>
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').first%>
@@ -45,8 +44,10 @@
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').third%>
             <%end%>
           <%end%>
+          <%puts images%>
           <%images.each do |image|%>
             <div class="col-md-3 camp-photo-wrapper">
+              <%puts asset_path image.image_url(:medium)%>
               <div style="background-image: url('<%=asset_path image.image_url(:medium)%>');" class="camp-photo">
               </div>
             </div>
