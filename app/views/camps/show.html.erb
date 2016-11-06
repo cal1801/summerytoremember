@@ -44,10 +44,8 @@
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').third%>
             <%end%>
           <%end%>
-          <%puts images%>
           <%images.each do |image|%>
             <div class="col-md-3 camp-photo-wrapper">
-              <%puts asset_path image.image_url(:medium)%>
               <div style="background-image: url('<%=asset_path image.image_url(:medium)%>');" class="camp-photo">
               </div>
             </div>
