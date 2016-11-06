@@ -38,7 +38,6 @@
           <%backup_image = {1 => 'first',2 => 'second',3 => 'third'}%>
           <%(1..counts).each do |count|%>
             <%if count == 1%>
-              <%byebug%>
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').first%>
             <%elsif count == 2%>
               <%byebug%>
