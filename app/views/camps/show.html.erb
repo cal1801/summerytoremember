@@ -40,10 +40,8 @@
             <%if count == 1%>
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').first%>
             <%elsif count == 2%>
-              <%byebug%>
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').second%>
             <%else%>
-              <%byebug%>
               <%images << Image.where(camp_id: @camp.id, image_type: 'pccca').third%>
             <%end%>
           <%end%>
