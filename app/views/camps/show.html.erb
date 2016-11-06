@@ -27,11 +27,8 @@
       </div>
     </div>
     <div class="col-xs-12 camp-container">
-      <%if @camp.staff_desc.blank?%>
-        <p class="description"><%=CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').first.description.html_safe %></p>
-      <%else%>
-        <p class="description"><%=@camp.staff_desc.html_safe %></p>
-      <%end%>
+      <<%info = @camp.staff_desc.blank? ? CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').first.description.try(:html_safe) : @camp.staff_desc.html_safe%>
+      <p class="description"><%=info%></p>
     </div>
     <div class="col-xs-12 camp-container">
       <div class="row camp-images">
