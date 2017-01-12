@@ -1,10 +1,22 @@
 class CampsController < ApplicationController
+  before_action :states_var
   before_action :set_camp, only: [:show, :edit, :update, :destroy]
+  before_action :fix_state, only: [:index]
 
   # GET /camps
   # GET /camps.json
   def index
     addresses = Address.near(params[:state], 150).order("distance")
+
+    state = @states.select{|state, abv| state.upcase == params[:state].upcase}
+    word = state.empty? ? params[:state] : state[0][1]
+
+    Address.where(state: word.upcase).each do |address|
+      addresses << address
+    end
+
+    addresses.uniq
+
     @camps = Camp.where('address_id IN (?)', addresses.map(&:id)).sort_by{|c| addresses.map(&:id).index c.address_id}
 
     farther_addresses = Address.near(params[:state], 300).order("distance")
@@ -15,7 +27,14 @@ class CampsController < ApplicationController
       marker.lat address.lat
       marker.lng address.lon
       marker.json({ id: address.id})
-      marker.infowindow "#{(Camp.find_by address_id: address.id).name}"
+      camp = Camp.find_by address_id: address.id
+      marker.infowindow "<a href='camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
+    end
+
+    if @hash.empty?
+      latlon = Geocoder.coordinates(params[:state])
+      temp = {lat: latlon[0], lng: latlon[1], id: 0, :infowindow => "No Camps Found in the Area"}
+      @hash << temp
     end
   end
 
@@ -83,6 +102,81 @@ class CampsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_camp
       @camp = Camp.find(params[:id])
+    end
+
+    def fix_state
+      state = @states.select{|state, abv| abv.upcase == params[:state].upcase}
+      word = state.empty? ? params[:state] : state[0][0]
+    end
+
+    def states_var
+      @states = [
+        ['Alabama', 'AL'],
+        ['Alaska', 'AK'],
+        ['Arizona', 'AZ'],
+        ['Arkansas', 'AR'],
+        ['California', 'CA'],
+        ['Colorado', 'CO'],
+        ['Connecticut', 'CT'],
+        ['Delaware', 'DE'],
+        ['District of Columbia', 'DC'],
+        ['Florida', 'FL'],
+        ['Georgia', 'GA'],
+        ['Hawaii', 'HI'],
+        ['Idaho', 'ID'],
+        ['Illinois', 'IL'],
+        ['Indiana', 'IN'],
+        ['Iowa', 'IA'],
+        ['Kansas', 'KS'],
+        ['Kentucky', 'KY'],
+        ['Louisiana', 'LA'],
+        ['Maine', 'ME'],
+        ['Maryland', 'MD'],
+        ['Massachusetts', 'MA'],
+        ['Michigan', 'MI'],
+        ['Minnesota', 'MN'],
+        ['Mississippi', 'MS'],
+        ['Missouri', 'MO'],
+        ['Montana', 'MT'],
+        ['Nebraska', 'NE'],
+        ['Nevada', 'NV'],
+        ['New Hampshire', 'NH'],
+        ['New Jersey', 'NJ'],
+        ['New Mexico', 'NM'],
+        ['New York', 'NY'],
+        ['North Carolina', 'NC'],
+        ['North Dakota', 'ND'],
+        ['Ohio', 'OH'],
+        ['Oklahoma', 'OK'],
+        ['Oregon', 'OR'],
+        ['Pennsylvania', 'PA'],
+        ['Puerto Rico', 'PR'],
+        ['Rhode Island', 'RI'],
+        ['South Carolina', 'SC'],
+        ['South Dakota', 'SD'],
+        ['Tennessee', 'TN'],
+        ['Texas', 'TX'],
+        ['Utah', 'UT'],
+        ['Vermont', 'VT'],
+        ['Virginia', 'VA'],
+        ['Washington', 'WA'],
+        ['West Virginia', 'WV'],
+        ['Wisconsin', 'WI'],
+        ['Wyoming', 'WY'],
+        ['Alberta', 'AB'],
+        ['British Columbia', 'BC'],
+        ['Manitoba', 'MB'],
+        ['New Brunswick', 'NB'],
+        ['Newfoundland', 'NL'],
+        ['Nova Scotia','NS'],
+        ['Northwest Territories','NT'],
+        ['Nunavut','NU'],
+        ['Ontario','ON'],
+        ['Prince Edward Island','PE'],
+        ['Quebec','QC'],
+        ['Saskatchewan','SK'],
+        ['Yukon','YT']
+      ]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

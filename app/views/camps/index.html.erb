@@ -17,63 +17,79 @@
 <div class="container results">
   <div class="row">
     <div class="col-lg-8">
-      <div class="row featured">
-        <%camp_plural = @camps.reject{|c| c.pccca_member == false}.count > 1 ? "Camp".pluralize : "Camp"%>
-        <%header = '<h2 class="results-text">Featured ' + camp_plural + '</h2>'%>
-        <%=header.html_safe if @camps.reject{|c| c.pccca_member == false}.count > 0%>
-        <% @camps.reject{|c| c.pccca_member == false}.each do |camp| %>
-          <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
-          <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
-            <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
-            <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
-              <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
-              <%#url = asset_path image.first.image_url if !image.blank?%>
-              <%#=image_tag url%>
+      <%if !(@camps.empty? && @farther_camps.empty?)%>
+        <div class="row featured">
+          <%camp_plural = @camps.reject{|c| c.pccca_member == false}.count > 1 ? "Camp".pluralize : "Camp"%>
+          <%header = '<h2 class="results-text">Featured ' + camp_plural + '</h2>'%>
+          <%=header.html_safe if @camps.reject{|c| c.pccca_member == false}.count > 0%>
+          <% @camps.reject{|c| c.pccca_member == false}.each do |camp| %>
+            <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
+            <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
+              <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
+              <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
+                <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
+                <%#url = asset_path image.first.image_url if !image.blank?%>
+                <%#=image_tag url%>
 
-              <h4 class="name"><%=camp.name%></h4>
-              <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-              <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
-            </div>
-          </div><!-- ending of result -->
-        <%end%>
-      </div>
-      <div class="row">
-        <hr style="padding: 15px" />
-        <% @camps.reject{|c| c.pccca_member == true}.each do |camp| %>
-          <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
-          <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
-            <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
-            <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
-              <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
-              <%#url = "site_images/"+image.first.image_url if !image.blank?%>
-              <%#=image_tag url%>
+                <h4 class="name"><%=camp.name%></h4>
+                <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
+                <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
+              </div>
+            </div><!-- ending of result -->
+          <%end%>
+        </div>
+        <div class="row">
+          <hr style="padding: 15px" />
+          <% @camps.reject{|c| c.pccca_member == true}.each do |camp| %>
+            <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
+            <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
+              <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
+              <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
+                <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
+                <%#url = "site_images/"+image.first.image_url if !image.blank?%>
+                <%#=image_tag url%>
 
-              <h4 class="name"><%=camp.name%></h4>
-              <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-              <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
-            </div>
-          </div><!-- ending of result -->
-        <%end%>
-      </div>
-      <div class="row">
-        <div style="height: 50px"></div>
-        <h2 class="results-text">Camps just outside your search area</h2>
-        <% @farther_camps.each do |camp| %>
-          <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
-          <div class="col-lg-4 col-md-6 col-sm-12" style="margin-bottom:30px">
-            <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
-            <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
-              <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
-              <%#url = image.first.image_url if !image.blank?%>
-              <%#=image_tag url%>
+                <h4 class="name"><%=camp.name%></h4>
+                <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
+                <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
+              </div>
+            </div><!-- ending of result -->
+          <%end%>
+        </div>
+        <%= '<div style="height: 50px"></div>'.html_safe unless @camps.empty?%>
+        <div class="row">
+          <%if !@farther_camps.empty?%>
+            <h2 class="results-text">Camps just outside your search area</h2>
+            <% @farther_camps.each do |camp| %>
+              <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
+              <div class="col-lg-4 col-md-6 col-sm-12" style="margin-bottom:30px">
+                <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
+                <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
+                  <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
+                  <%#url = image.first.image_url if !image.blank?%>
+                  <%#=image_tag url%>
 
-              <h4 class="name"><%=camp.name%></h4>
-              <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-              <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
+                  <h4 class="name"><%=camp.name%></h4>
+                  <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
+                  <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
+                </div>
+              </div><!-- ending of result -->
+            <%end%>
+          <%end%>
+        </div>
+      <%else%>
+        <h2 class="results-text">No camps found. Please try searching again.</h2>
+        <%=form_tag camps_path, :id => 'ReSearchForm', :class => "row", :method => 'get' do %>
+          <h3 id="state_display">Choose A State</h3>
+          <div class="row">
+            <div class="col-lg-12">
+              <div id="pccca_map"></div>
             </div>
-          </div><!-- ending of result -->
+          </div>
+
+          <%=hidden_field_tag 'state'%>
         <%end%>
-      </div>
+      <%end%>
     </div>
     <div class="col-lg-4">
       <div class="affix">
@@ -86,16 +102,16 @@
 <br>
 
 <script type="text/javascript">
-handler = Gmaps.build('Google');
+handler = Gmaps.build('Google', {markers: {clusterer: undefined}});
 handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
   markers = handler.addMarkers(<%=raw @hash.to_json %>);
 
   _.each(<%=raw @hash.to_json %>, function(json, index){
     json.marker = markers[index];
     $(".location-" + json.id).on('mouseover', function() {
-      handler.getMap().setZoom(9);
+      //handler.getMap().setZoom(9);
       json.marker.setMap(handler.getMap()); //because clusterer removes map property from marker
-      json.marker.panTo();
+      //json.marker.panTo();
       google.maps.event.trigger(json.marker.getServiceObject(), 'click');
     });
     $(".location-" + json.id).on('mouseout', function() {
@@ -107,7 +123,138 @@ handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
 
   handler.bounds.extendWith(markers);
   handler.fitMapToBounds();
+  <%if @hash.size == 1 && @hash.first[:id] == 0%>
+    handler.getMap().setZoom(5);
+  <%end%>
 });
 </script>
 
+<script>
+  $(document).ready(function() {
+    $('#pccca_map').usmap({
+      'showLabels':false,
+      'stateSpecificStyles': {
+        'CA': {fill: '#CC3433'},
+        'OR': {fill: '#CC3433'},
+        'WA': {fill: '#CC3433'},
+        'ID': {fill: '#CC3433'},
+        'NV': {fill: '#CC3433'},
+        'AK': {fill: '#CC3433'},
+        'HI': {fill: '#CC3433'},
+        'CO': {fill: '#CDCC00'},
+        'MT': {fill: '#CDCC00'},
+        'WY': {fill: '#CDCC00'},
+        'UT': {fill: '#CDCC00'},
+        'AZ': {fill: '#006599'},
+        'NM': {fill: '#006599'},
+        'TX': {fill: '#006599'},
+        'OK': {fill: '#006599'},
+        'AR': {fill: '#006599'},
+        'LA': {fill: '#006599'},
+        'KS': {fill: '#9966FF'},
+        'MO': {fill: '#9966FF'},
+        'IL': {fill: '#9966FF'},
+        'IN': {fill: '#9966FF'},
+        'ND': {fill: '#990033'},
+        'SD': {fill: '#990033'},
+        'NE': {fill: '#990033'},
+        'MN': {fill: '#990033'},
+        'IA': {fill: '#990033'},
+        'WI': {fill: '#990033'},
+        'AL': {fill: '#CD6601'},
+        'MS': {fill: '#CD6601'},
+        'KY': {fill: '#CD6601'},
+        'TN': {fill: '#CD6601'},
+        'MI': {fill: '#336601'},
+        'OH': {fill: '#336601'},
+        'FL': {fill: '#96CA05'},
+        'GA': {fill: '#96CA05'},
+        'SC': {fill: '#96CA05'},
+        'WV': {fill: '#999A01'},
+        'PA': {fill: '#999A01'},
+        'NY': {fill: '#2C0092'},
+        'NJ': {fill: '#2C0092'},
+        'RI': {fill: '#2C0092'},
+        'CT': {fill: '#2C0092'},
+        'MA': {fill: '#2C0092'},
+        'VT': {fill: '#2C0092'},
+        'NH': {fill: '#2C0092'},
+        'ME': {fill: '#2C0092'},
+        'NC': {fill: '#96CA05'},
+        'VA': {fill: '#96CA05'},
+        'DC': {fill: '#96CA05'},
+        'MD': {fill: '#96CA05'},
+        'DE': {fill: '#96CA05'},
+        'BC': {fill: '#6700FF'},
+        'AB': {fill: '#336799'},
+        'SK': {fill: '#9ACCCD'},
+        'MB': {fill: '#9ACCCD'},
+        'ON': {fill: '#99CD00'},
+        'QC': {fill: '#FFCC9A'},
+        'NL': {fill: '#9A0001'},
+        'NS': {fill: '#9A0001'},
+        'NB': {fill: '#9A0001'},
+        'PE': {fill: '#9A0001'},
+      },
+      'stateSpecificLabelBackingStyles': {
+        'DE': {fill: '#96CA05'},
+        'VT': {fill: '#2C0092'},
+        'NH': {fill: '#2C0092'},
+        'MA': {fill: '#2C0092'},
+        'NJ': {fill: '#2C0092'},
+        'RI': {fill: '#2C0092'},
+        'CT': {fill: '#2C0092'},
+        'DC': {fill: '#96CA05'},
+        'MD': {fill: '#96CA05'},
+      },
+      'labelTextStyles': {
+        fill: "#ffffff",
+      },
+      'stateStyles': {
+        fill: "#4ECDC4",
+        stroke: "#41A59B",
+        "stroke-width": 1,
+        "stroke-linejoin": "round",
+        scale: [1, 1]
+      },
+      'stateHoverStyles': {
+        fill: "#FFFFFF",
+        stroke: "#ADCC56",
+        scale: [5, 5]
+      },
+        'labelBackingStyles': {
+        fill: "#4ECDC4",
+        stroke: "#41A59B",
+        "stroke-width": 1,
+        "stroke-linejoin": "round",
+        scale: [1, 1]
+      },
+
+      // The styles for the hover
+      'labelBackingHoverStyles': {
+        fill: "#C7F464",
+        stroke: "#ADCC56",
+      },
+      'labelTextStyles': {
+        fill: "#222",
+        'stroke': 'none',
+        'font-weight': 300,
+        'stroke-width': 0,
+        'font-size': '10px'
+      },
+      // The click action
+      click: function(event, data) {
+        $('#state').val(data.name);
+        $( "#ReSearchForm" ).submit();
+      },
+
+      mouseover: function(event, data) {
+          $('#state_display')
+            .text("I want to work in: "+data.name)
+      }
+    });
+  });
+</script>
+
+<%=javascript_include_tag 'raphael-min', 'jquery.usmap'%>
 <%#= link_to 'New Camp', new_camp_path %>

@@ -129,6 +129,32 @@ svg path {
   padding-top: 43px;
 }
 
+#ReSearchForm input {
+  background: white;
+  text-align: left;
+  font-size: 20px;
+}
+
+#ReSearchForm .btn {
+  margin-top: 3px;
+  font-size: 14px;
+  box-shadow: none;
+  color: #000;
+}
+
+#ReSearchForm #pccca_map {
+  margin-top: 0;
+  padding-left: 0;
+}
+
+#ReSearchForm .btn:hover {
+  transform: none;
+}
+
+.infowindow-link {
+  text-decoration: underline;
+}
+
 @media (max-width: 767px) {
   .top-bar {
     height: 85px;
