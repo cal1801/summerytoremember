@@ -39,7 +39,7 @@
           <%end%>
         </div>
         <div class="row">
-          <hr style="padding: 15px" />
+          <%='<hr style="padding: 15px"/>'.html_safe unless @camps.reject{|c| c.pccca_member == false}.empty?%>
           <% @camps.reject{|c| c.pccca_member == true}.each do |camp| %>
             <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
             <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
