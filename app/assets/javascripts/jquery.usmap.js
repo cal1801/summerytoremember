@@ -48,10 +48,10 @@
   
   
   // Some constants
-  var WIDTH = 720,
-      HEIGHT = 550,
-      LABELS_WIDTH = 70;
-  
+  var WIDTH = 650,
+      HEIGHT = 300,
+      LABELS_WIDTH = 0;
+
   // Default options
   var defaults = {
     // The styles for the state

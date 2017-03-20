@@ -3,15 +3,15 @@
 <%end%>
 <div class="content row">
   <div class="col-lg-12" style="margin-top: 25px;">
-    <%=image_tag 's2r', :style => 'max-width: 90vw; max-height: 35vh'%>
+    <%=image_tag 's2r', :style => 'max-width: 90vw; max-height: 28vh'%>
 
     <%=form_tag camps_path, :id => 'SearchForm', :method => 'get' do %>
       <h1 class="search-prompt">Where do you want to work this summer?</h1>
 
-      <h3 id="state_display">Choose A State</h3>
+      <h3 id="state_display">Choose A State/Province</h3>
       <div class="row">
         <div class="col-lg-12">
-          <div id="pccca_map"></div>
+          <div id="pccca_map" style="width: 450px; height: 405px;"></div>
         </div>
       </div>
 
@@ -94,20 +94,6 @@
         'NS': {fill: '#9A0001'},
         'NB': {fill: '#9A0001'},
         'PE': {fill: '#9A0001'},
-      },
-      'stateSpecificLabelBackingStyles': {
-        'DE': {fill: '#96CA05'},
-        'VT': {fill: '#2C0092'},
-        'NH': {fill: '#2C0092'},
-        'MA': {fill: '#2C0092'},
-        'NJ': {fill: '#2C0092'},
-        'RI': {fill: '#2C0092'},
-        'CT': {fill: '#2C0092'},
-        'DC': {fill: '#96CA05'},
-        'MD': {fill: '#96CA05'},
-      },
-      'labelTextStyles': {
-        fill: "#ffffff",
       },
       'stateStyles': {
         fill: "#4ECDC4",
