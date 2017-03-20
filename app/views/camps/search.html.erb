@@ -1,5 +1,4 @@
 <% content_for :head do %>
-
 <%end%>
 <div class="content row">
   <div class="col-lg-12" style="margin-top: 25px;">
@@ -22,11 +21,21 @@
 
 
 <div class="overlay"></div>
-<video playsinline autoplay muted loop id="my-video" class="video">
+<%#= video_tag(["PCCCA Summer Campers.mp4", "PCCCA Summer Campers.webm", "PCCCA Summer Campers.ogg"], :autoplay => true, :loop => true, :id=>"my-video", :playsinline => true, :muted => true,:class=>"video") %>
+
+<div class="fullscreen-bg">
+  <video loop muted autoplay poster="assets/campfire.png" class="fullscreen-bg__video">
+    <source src="https://s3.amazonaws.com/pccca/videos/PCCCA+Summer+Campers.webm" type="video/webm">
+    <source src="https://s3.amazonaws.com/pccca/videos/PCCCA+Summer+Campers.ogg" type="video/ogg">
+    <source src="https://s3.amazonaws.com/pccca/videos/PCCCA+Summer+Campers.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!--<video playsinline autoplay muted loop id="my-video" class="video">
   <source src="media/PCCCA Summer Campers.webm" type="video/webm">
   <source src="media/PCCCA Summer Campers.mp4" type="video/mp4">
   <source src="media/PCCCA Summer Campers.ogg" type="video/ogg">
-</video><!-- /video -->
+</video>--><!-- /video -->
 
 <script>
   $(document).ready(function() {
