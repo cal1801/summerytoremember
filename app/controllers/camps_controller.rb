@@ -6,7 +6,7 @@ class CampsController < ApplicationController
   # GET /camps
   # GET /camps.json
   def index
-    addresses = Address.near(params[:state], 150).order("distance")
+    addresses = Address.near("#{params[:state]}, #{@country}", 150).order("distance")
 
     state = @states.select{|state, abv| state.upcase == params[:state].upcase}
     word = state.empty? ? params[:state] : state[0][1]
@@ -19,7 +19,7 @@ class CampsController < ApplicationController
 
     @camps = Camp.where('address_id IN (?)', addresses.map(&:id)).sort_by{|c| addresses.map(&:id).index c.address_id}
 
-    farther_addresses = Address.near(params[:state], 300).order("distance")
+    farther_addresses = Address.near("#{params[:state]}, #{@country}", 300).order("distance")
     @farther_camps = Camp.where('address_id IN (?)', farther_addresses.map(&:id)).sort_by{|c| farther_addresses.map(&:id).index c.address_id} - @camps
 
     all_addresses = addresses + farther_addresses
@@ -32,7 +32,7 @@ class CampsController < ApplicationController
     end
 
     if @hash.empty?
-      latlon = Geocoder.coordinates(params[:state])
+      latlon = Geocoder.coordinates("#{params[:state]}, #{@country}")
       temp = {lat: latlon[0], lng: latlon[1], id: 0, :infowindow => "No Camps Found in the Area"}
       @hash << temp
     end
@@ -107,6 +107,7 @@ class CampsController < ApplicationController
     def fix_state
       state = @states.select{|state, abv| abv.upcase == params[:state].upcase}
       word = state.empty? ? params[:state] : state[0][0]
+      @country = ['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'].include?(params[:state]) ? "Canada" : "United States"
     end
 
     def states_var
