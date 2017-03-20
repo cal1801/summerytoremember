@@ -1,0 +1,8 @@
+!!! XML
+%urlset{:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9"}
+  - for camp in @camps
+    %url
+      %loc #{camp_url(camp)}/
+      %lastmod=camp.updated_at.strftime('%Y-%m-%d')
+      %changefreq monthly
+      %priority 0.5
