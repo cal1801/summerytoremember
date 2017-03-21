@@ -21,7 +21,7 @@ csv.each do |row|
   camp.update_column('contact_id', t.id)
   puts "#{t.f_name}, #{t.l_name} saved for #{camp.name}"
 
-  user = User.create(email:t.email,password:"pccca_2017")
+  user = User.create(email:t.email,password:"pccca_2017",:password_confirmation => "pccca_2017")
 end
 
 puts "There are now #{Contact.count} rows in the contacts table"
