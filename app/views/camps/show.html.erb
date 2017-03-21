@@ -1,5 +1,7 @@
 <%content_for :head do%>
   <%= stylesheet_link_tag 'simple-ripple-effect'%>
+  <title>Summer Camp Jobs at <%=@camp.name%> - Summer To Remember</title>
+  <meta name="description" content="<%=@camp.name%> has many summer camp jobs to offer in <%=@camp.address.try(:city)%>, <%= @camp.address.try(:state) %>. Read more about their camp and about the opporutnities they have on their website.">
 <%end%>
 
 <div class="row full-width fixed" style="top: 0; z-index: 10">
@@ -8,7 +10,8 @@
       <%=link_to (image_tag 's2r'), root_path%>
     </div>
     <div class="col-lg-8 col-xs-7 menu">
-      <%=link_to "<h3>&#8610; Back to Results</h3>".html_safe, search_camps_path(:state => params[:s]), method: :post%>
+      <a href="javascript:history.back()"><h3>&#8610; Back to Results</h3></a>
+      <%#=link_to "<h3>&#8610; Back to Results</h3>".html_safe, search_camps_path(:state => params[:s]), method: :post%>
     </div>
   </div>
 </div><!--end top-bar-->
@@ -45,15 +48,16 @@
             <%end%>
           <%end%>
           <%images.each do |image|%>
-            <div class="col-md-3 camp-photo-wrapper">
-              <div style="background-image: url('<%=asset_path image.image_url(:medium) unless image.nil?%>');" class="camp-photo">
+            <%unless image.nil?%>
+              <div class="col-md-3 camp-photo-wrapper">
+                <div style="background-image: url('<%=asset_path image.image_url(:medium) unless image.nil?%>');" class="camp-photo"></div>
               </div>
-            </div>
+            <%end%>
           <%end%>
 
         <%end%>
         <div class="col-md-3 website">
-          <%url = @camp.web_url.blank? ? @camp.web_url : @camp.staff_url%>
+          <%url = @camp.staff_url.blank? ? @camp.web_url : @camp.staff_url%>
           <%=link_to 'Learn how to apply for a staff position', url, {:class => "ripple-effect details", :"data-ripple-color" => "#f2c84b"}%>
         </div>
       </div>

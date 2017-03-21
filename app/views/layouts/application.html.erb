@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Summer To Remember - Find your perfect summer job</title>
   <%= stylesheet_link_tag 'application', 'app', 'style', media: 'all'%>
   <%= javascript_include_tag 'application'%>
   <%= csrf_meta_tags %>
+  <%= yield :head%>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 <body>
