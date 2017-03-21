@@ -33,7 +33,7 @@
 
                 <h4 class="name"><%=camp.name%></h4>
                 <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-                <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
+                <%= link_to 'Find Out More', camp_path(camp, :s => params[:state]), :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
               </div>
             </div><!-- ending of result -->
           <%end%>

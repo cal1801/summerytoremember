@@ -8,7 +8,7 @@
       <%=link_to (image_tag 's2r'), root_path%>
     </div>
     <div class="col-lg-8 col-xs-7 menu">
-      <a href="javascript:history.back()"><h3>&#8610; Back to Results</h3></a>
+      <%=link_to "<h3>&#8610; Back to Results</h3>".html_safe, search_camps_path(:state => params[:s]), method: :post%>
     </div>
   </div>
 </div><!--end top-bar-->

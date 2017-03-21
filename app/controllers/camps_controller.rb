@@ -105,7 +105,7 @@ class CampsController < ApplicationController
     end
 
     def fix_state
-      params[:state] = params[:sm_state].nil? ? params[:state] : params[:sm_state]
+      params[:state] = params[:sm_state].blank? ? params[:state] : params[:sm_state]
       state = @states.select{|state, abv| abv.upcase == params[:state].upcase}
       word = state.empty? ? params[:state] : state[0][0]
       @country = ['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'].include?(params[:state]) ? "Canada" : "United States"

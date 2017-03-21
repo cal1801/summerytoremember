@@ -85,7 +85,7 @@ input {
   input {
     font-size: 15px;
   }
-  #pccca_map {
+  #pccca_map, #state_display {
     display: none;
   }
 }
