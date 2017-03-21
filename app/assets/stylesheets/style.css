@@ -94,6 +94,9 @@ input {
   #pccca_state_select {
     display: none;
   }
+  input[type=submit]{
+    display: none;
+  }
 }
 
 /* =============================================================================
@@ -162,7 +165,8 @@ svg path {
   }
 
   .top-bar img {
-    max-width: 105px
+    max-width: 105px;
+    max-height: 65px;
   }
 
   .top-bar h3 {

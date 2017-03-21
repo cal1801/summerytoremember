@@ -1,13 +1,15 @@
 <% content_for :head do %>
 <%end%>
-<div class="content row">
-  <div class="col-lg-12" style="margin-top: 25px;">
+<div class="content row" style="height: 100vh; display: flex; flex-direction: column; justify-content: space-around;">
+  <div class="col-lg-12">
     <%=image_tag 's2r', :style => 'max-width: 90vw; max-height: 28vh'%>
-
-    <%=form_tag search_camps_path, :id => 'SearchForm', :method => 'post' do %>
+  </div>
+  <%=form_tag search_camps_path, :id => 'SearchForm', :method => 'post' do %>
+    <div class="col-lg-12">
       <h1 class="search-prompt">Where do you want to work this summer?</h1>
-
-      <h3 id="state_display">Choose A State/Province</h3>
+    </div>
+    <div class="col-lg-12">
+    <h3 id="state_display">Choose A State/Province</h3>
       <div class="row">
         <div class="col-lg-12">
           <div id="pccca_map" style="width: 450px; height: 405px;"></div>
@@ -15,9 +17,9 @@
           <%=submit_tag "Search for Camps", :class=>"btn btn-success", :style=>"margin-top: 25px; width: 100%"%>
         </div>
       </div>
-
-      <%=hidden_field_tag 'state'%>
-    <%end%>
+    </div>
+    <%=hidden_field_tag 'state'%>
+  <%end%>
   </div>
 </div>
 
