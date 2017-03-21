@@ -423,3 +423,15 @@ a.details:visited, a.details.results:visited {
   transform: translate(-50%, -50%);
   background: rgba(255,255,255,.7);
 }
+
+
+/* =============================================================================
+  Notification stuff
+============================================================================= */
+.notice, .alert {
+  position: absolute;
+  right: 50px;
+  top: 30px;
+  padding: 10px;
+  border-radius: 5px;
+}
