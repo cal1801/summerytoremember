@@ -4,7 +4,7 @@
   <meta name="description" content="<%=@camp.name%> has many summer camp jobs to offer in <%=@camp.address.try(:city)%>, <%= @camp.address.try(:state) %>. Read more about their camp and about the opporutnities they have on their website.">
 <%end%>
 
-<div class="row full-width fixed" style="top: 0; z-index: 10">
+<div class="row full-width fixed" style="top: 0; z-index: 10; <%='margin-top: 50px' if user_signed_in?%>">
   <div class="col-lg-12 top-bar">
     <div class="col-lg-4 col-xs-5 ">
       <%=link_to (image_tag 's2r'), root_path%>

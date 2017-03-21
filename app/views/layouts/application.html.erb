@@ -13,7 +13,7 @@
   <%if current_user.try(:admin?)%>
     <%=render "layouts/admin_nav"%>
   <%else%>
-    <%render "layouts/user_nav"%>
+    <%=render "layouts/user_nav"%>
   <%end%>
 <%end%>
 

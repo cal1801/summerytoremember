@@ -1,13 +1,14 @@
 <div class="nav-bar">
   <div class="container">
     <div class="row admin-nav">
-      <div class="col-lg-9">
+      <div class="col-lg-6">
         <%=image_tag "s2r", height: "50px"%>
         &nbsp;&nbsp;&nbsp;&nbsp;Logged in as <%=current_user.email%>
       </div>
-      <div class="col-lg-3 sign-out">
-        <%=link_to "Edit Your Camp", camps_path%>
-        <%=link_to "View Your Camp", camps_path%>
+      <div class="col-lg-6 sign-out">
+        <%camp = (Contact.find_by_email current_user.email).camp%>
+        <%=link_to "Edit Your Camp", edit_camp_path(camp)%>
+        <%=link_to "View Your Camp", camp_path(camp)%>
         <%=link_to "Sign Out", destroy_user_session_path, :method => "delete"%>
       </div>
     </div>

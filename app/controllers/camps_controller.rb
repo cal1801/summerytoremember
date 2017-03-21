@@ -22,7 +22,10 @@ class CampsController < ApplicationController
 
   # GET /camps/1/edit
   def edit
-    3.times {@camp.images.build}
+    if (Contact.find_by_email current_user.email).camp != @camp
+      redirect_to edit_camp_path((Contact.find_by_email current_user.email).camp), alert: 'Can only edit your camp listing.'
+    end
+    #3.times {@camp.images.build}
   end
 
   # POST /camps
@@ -183,6 +186,7 @@ class CampsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def camp_params
-      params.require(:camp).permit(:name, :address_id, :contact_id, :web_url, :pccca_member, :site_setup_id, images_attributes: [:image_url, :image_type, :camp_id])
+      params[:camp][:images_attributes].delete_if{|k,v| v[:image_url].nil?}
+      params.require(:camp).permit(:name, :address_id, :contact_id, :web_url, :pccca_member, :site_setup_id, :staff_desc, :staff_url, images_attributes: [:image_url, :image_type, :camp_id])
     end
 end
