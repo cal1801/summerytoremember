@@ -9,6 +9,10 @@ class CampsController < ApplicationController
 
   end
 
+  def all
+    @camps = Camp.all
+  end
+
   # GET /camps/1
   # GET /camps/1.json
   def show
@@ -22,7 +26,7 @@ class CampsController < ApplicationController
 
   # GET /camps/1/edit
   def edit
-    if (Contact.find_by_email current_user.email).camp != @camp
+    unless (Contact.find_by_email current_user.email).try(:camp) == @camp || current_user.admin?
       redirect_to edit_camp_path((Contact.find_by_email current_user.email).camp), alert: 'Can only edit your camp listing.'
     end
     #3.times {@camp.images.build}

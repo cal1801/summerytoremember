@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :camps do
     collection do
       post 'search'
+      get 'all'
     end
   end
 
