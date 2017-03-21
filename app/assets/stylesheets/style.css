@@ -424,6 +424,22 @@ a.details:visited, a.details.results:visited {
   background: rgba(255,255,255,.7);
 }
 
+/* =============================================================================
+  User stuff
+============================================================================= */
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flex-container input {
+  text-align: left
+}
 
 /* =============================================================================
   Notification stuff
@@ -431,7 +447,32 @@ a.details:visited, a.details.results:visited {
 .notice, .alert {
   position: absolute;
   right: 50px;
-  top: 30px;
+  top: 5px;
   padding: 10px;
   border-radius: 5px;
+  z-index: 10;
+}
+
+/* =============================================================================
+  Admin stuff
+============================================================================= */
+.nav-bar {
+  height: 50px;
+  background: #fff;
+  position: relative;
+  z-index: 10;
+}
+
+.sign-out {
+  margin-top: 15px;
+  text-align: right;
+  color: #eee;
+}
+
+.sign-out a {
+  margin-right: 10px;
+}
+
+.sign-out a:last-child {
+  margin-right: 0
 }

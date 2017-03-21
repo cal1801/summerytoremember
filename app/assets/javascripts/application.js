@@ -16,3 +16,7 @@
 //= require raphael-min
 //= require underscore
 //= require gmaps/google
+
+setTimeout(function() {
+  $('.notice, .alert').fadeOut();
+}, 3000 );
