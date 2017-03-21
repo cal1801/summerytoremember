@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :addresses
   resources :camps do
     collection do
-      get 'search'
+      post 'search'
     end
   end
 
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'camps#search'
+  root 'camps#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

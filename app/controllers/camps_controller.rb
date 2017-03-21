@@ -1,41 +1,12 @@
 class CampsController < ApplicationController
   before_action :states_var
   before_action :set_camp, only: [:show, :edit, :update, :destroy]
-  before_action :fix_state, only: [:index]
+  before_action :fix_state, only: [:search]
 
   # GET /camps
   # GET /camps.json
   def index
-    addresses = Address.near("#{params[:state]}, #{@country}", 150).order("distance")
 
-    state = @states.select{|state, abv| state.upcase == params[:state].upcase}
-    word = state.empty? ? params[:state] : state[0][1]
-
-    Address.where(state: word.upcase).each do |address|
-      addresses << address
-    end
-
-    addresses.uniq
-
-    @camps = Camp.where('address_id IN (?)', addresses.map(&:id)).sort_by{|c| addresses.map(&:id).index c.address_id}
-
-    farther_addresses = Address.near("#{params[:state]}, #{@country}", 300).order("distance")
-    @farther_camps = Camp.where('address_id IN (?)', farther_addresses.map(&:id)).sort_by{|c| farther_addresses.map(&:id).index c.address_id} - @camps
-
-    all_addresses = addresses + farther_addresses
-    @hash = Gmaps4rails.build_markers(all_addresses) do |address, marker|
-      marker.lat address.lat
-      marker.lng address.lon
-      marker.json({ id: address.id})
-      camp = Camp.find_by address_id: address.id
-      marker.infowindow "<a href='camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
-    end
-
-    if @hash.empty?
-      latlon = Geocoder.coordinates("#{params[:state]}, #{@country}")
-      temp = {lat: latlon[0], lng: latlon[1], id: 0, :infowindow => "No Camps Found in the Area"}
-      @hash << temp
-    end
   end
 
   # GET /camps/1
@@ -95,7 +66,36 @@ class CampsController < ApplicationController
   end
 
   def search
+    addresses = Address.near("#{params[:state]}, #{@country}", 150).order("distance")
 
+    state = @states.select{|state, abv| state.upcase == params[:state].upcase}
+    word = state.empty? ? params[:state] : state[0][1]
+
+    Address.where(state: word.upcase).each do |address|
+      addresses << address
+    end
+
+    addresses.uniq
+
+    @camps = Camp.where('address_id IN (?)', addresses.map(&:id)).sort_by{|c| addresses.map(&:id).index c.address_id}
+
+    farther_addresses = Address.near("#{params[:state]}, #{@country}", 300).order("distance")
+    @farther_camps = Camp.where('address_id IN (?)', farther_addresses.map(&:id)).sort_by{|c| farther_addresses.map(&:id).index c.address_id} - @camps
+
+    all_addresses = addresses + farther_addresses
+    @hash = Gmaps4rails.build_markers(all_addresses) do |address, marker|
+      marker.lat address.lat
+      marker.lng address.lon
+      marker.json({ id: address.id})
+      camp = Camp.find_by address_id: address.id
+      marker.infowindow "<a href='camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
+    end
+
+    if @hash.empty?
+      latlon = Geocoder.coordinates("#{params[:state]}, #{@country}")
+      temp = {lat: latlon[0], lng: latlon[1], id: 0, :infowindow => "No Camps Found in the Area"}
+      @hash << temp
+    end
   end
 
   private
@@ -105,6 +105,7 @@ class CampsController < ApplicationController
     end
 
     def fix_state
+      params[:state] = params[:sm_state].nil? ? params[:state] : params[:sm_state]
       state = @states.select{|state, abv| abv.upcase == params[:state].upcase}
       word = state.empty? ? params[:state] : state[0][0]
       @country = ['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'].include?(params[:state]) ? "Canada" : "United States"

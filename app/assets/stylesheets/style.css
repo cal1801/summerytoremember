@@ -69,18 +69,13 @@ input {
   padding: 10px
 }
 
-.btn {
-  margin-top: 30px;
-  padding: 10px 30px;
-  background: #385273;
-  color: #f2c84b;
-  box-shadow: 0 5px #141d29;
-  cursor: pointer;
+.btn-success {
+  background: #1cb1bc;
+  border-color: #148088;
 }
 
-.btn:hover {
-  transform: translate(0, 5px);
-  box-shadow: none;
+.btn-success:focus, .btn-success:hover, .btn-success:active:hover {
+  background: #1cb1bc;
 }
 
 @media (max-width: 767px) {
@@ -90,7 +85,13 @@ input {
   input {
     font-size: 15px;
   }
-  video {
+  #pccca_map {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  #pccca_state_select {
     display: none;
   }
 }
@@ -383,7 +384,7 @@ a.details:visited, a.details.results:visited {
 
 @media (max-width: 767px) {
     .fullscreen-bg {
-        background: url('assets/campfire.png') center center / cover no-repeat;
+        background: url('campfire.png') center center / cover no-repeat;
     }
 
     .fullscreen-bg__video {

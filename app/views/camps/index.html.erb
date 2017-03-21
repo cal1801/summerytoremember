@@ -1,133 +1,43 @@
-<script src="//maps.google.com/maps/api/js?key=AIzaSyDBBGiFgEnyUDYe4V-751ptbtLIgR7dpMU"></script>
-<script src="//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js"></script>
+<% content_for :head do %>
+<%end%>
+<div class="content row">
+  <div class="col-lg-12" style="margin-top: 25px;">
+    <%=image_tag 's2r', :style => 'max-width: 90vw; max-height: 28vh'%>
 
-<p id="notice"><%= notice %></p>
+    <%=form_tag search_camps_path, :id => 'SearchForm', :method => 'post' do %>
+      <h1 class="search-prompt">Where do you want to work this summer?</h1>
 
-<div class="row full-width fixed" style="top: 0; z-index: 10">
-  <div class="col-lg-12 top-bar">
-    <div class="col-lg-4 col-xs-5 ">
-      <%=link_to (image_tag 's2r'), root_path%>
-    </div>
-    <div class="col-lg-8 col-xs-7 menu">
-      <h3><%=link_to '&#8610; Back to Search'.html_safe, root_path%></h3>
-    </div>
-  </div>
-</div><!--end top-bar-->
-
-<div class="container results">
-  <div class="row">
-    <div class="col-lg-8">
-      <%if !(@camps.empty? && @farther_camps.empty?)%>
-        <div class="row featured">
-          <%camp_plural = @camps.reject{|c| c.pccca_member == false}.count > 1 ? "Camp".pluralize : "Camp"%>
-          <%header = '<h2 class="results-text">Featured ' + camp_plural + '</h2>'%>
-          <%=header.html_safe if @camps.reject{|c| c.pccca_member == false}.count > 0%>
-          <% @camps.reject{|c| c.pccca_member == false}.each do |camp| %>
-            <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
-            <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
-              <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
-              <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
-                <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
-                <%#url = asset_path image.first.image_url if !image.blank?%>
-                <%#=image_tag url%>
-
-                <h4 class="name"><%=camp.name%></h4>
-                <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-                <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
-              </div>
-            </div><!-- ending of result -->
-          <%end%>
+      <h3 id="state_display">Choose A State/Province</h3>
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="pccca_map" style="width: 450px; height: 405px;"></div>
+          <%=select_tag :sm_state, options_for_select(us_states), :id=> "pccca_state_select", :class=>"form-control" %>
+          <%=submit_tag "Search for Camps", :class=>"btn btn-success", :style=>"margin-top: 25px; width: 100%"%>
         </div>
-        <div class="row">
-          <%='<hr style="padding: 15px"/>'.html_safe unless @camps.reject{|c| c.pccca_member == false}.empty?%>
-          <% @camps.reject{|c| c.pccca_member == true}.each do |camp| %>
-            <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
-            <div class="col-md-6 col-sm-12" style="margin-bottom:30px">
-              <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
-              <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
-                <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
-                <%#url = "site_images/"+image.first.image_url if !image.blank?%>
-                <%#=image_tag url%>
-
-                <h4 class="name"><%=camp.name%></h4>
-                <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-                <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
-              </div>
-            </div><!-- ending of result -->
-          <%end%>
-        </div>
-        <%= '<div style="height: 50px"></div>'.html_safe unless @camps.empty?%>
-        <div class="row">
-          <%if !@farther_camps.empty?%>
-            <h2 class="results-text">Camps just outside your search area</h2>
-            <% @farther_camps.each do |camp| %>
-              <%image = Image.where("camp_id = ? and image_type = 's2r'", camp.id).blank? ? Image.where("camp_id = ? and image_type = 'pccca'", camp.id) : Image.where("camp_id = ? and image_type = 's2r'", camp.id)%>
-              <div class="col-lg-4 col-md-6 col-sm-12" style="margin-bottom:30px">
-                <%background = image.blank? ? "" : "background-image: url(#{asset_path image.first.image_url(:medium)})"%>
-                <div class="card-container <%="no-image" if image.blank?%> location-<%=camp.address_id%>" style="<%=background%>">
-                  <div class="card-overlay" style="<%='display: none;' if image.blank?%>"></div>
-                  <%#url = image.first.image_url if !image.blank?%>
-                  <%#=image_tag url%>
-
-                  <h4 class="name"><%=camp.name%></h4>
-                  <p class="city"><%=camp.address.city%>, <%=camp.address.state%></p>
-                  <%= link_to 'Find Out More', camp, :class => "details results ripple-effect", :"data-ripple-color" => "#007BBC", :"data-ripple-limit" => ".card-container"%>
-                </div>
-              </div><!-- ending of result -->
-            <%end%>
-          <%end%>
-        </div>
-      <%else%>
-        <h2 class="results-text">No camps found. Please try searching again.</h2>
-        <%=form_tag camps_path, :id => 'ReSearchForm', :class => "row", :method => 'get' do %>
-          <h3 id="state_display">Choose A State</h3>
-          <div class="row">
-            <div class="col-lg-12">
-              <div id="pccca_map" style="width: 450px; height: 405px;"></div>
-            </div>
-          </div>
-
-          <%=hidden_field_tag 'state'%>
-        <%end%>
-      <%end%>
-    </div>
-    <div class="col-lg-4">
-      <div class="affix">
-        <div id="map" style='height: 75vh;'></div>
       </div>
-    </div>
+
+      <%=hidden_field_tag 'state'%>
+    <%end%>
   </div>
 </div>
 
-<br>
 
-<script type="text/javascript">
-handler = Gmaps.build('Google', {markers: {clusterer: undefined}});
-handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-  markers = handler.addMarkers(<%=raw @hash.to_json %>);
+<div class="overlay"></div>
+<%#= video_tag(["PCCCA Summer Campers.mp4", "PCCCA Summer Campers.webm", "PCCCA Summer Campers.ogg"], :autoplay => true, :loop => true, :id=>"my-video", :playsinline => true, :muted => true,:class=>"video") %>
 
-  _.each(<%=raw @hash.to_json %>, function(json, index){
-    json.marker = markers[index];
-    $(".location-" + json.id).on('mouseover', function() {
-      //handler.getMap().setZoom(9);
-      json.marker.setMap(handler.getMap()); //because clusterer removes map property from marker
-      //json.marker.panTo();
-      google.maps.event.trigger(json.marker.getServiceObject(), 'click');
-    });
-    $(".location-" + json.id).on('mouseout', function() {
-      handler.bounds.extendWith(markers);
-      handler.fitMapToBounds();
-      json.marker.infowindow.close()
-    });
-  });
+<div class="fullscreen-bg">
+  <video loop muted autoplay poster="assets/campfire.png" class="fullscreen-bg__video">
+    <source src="https://s3.amazonaws.com/pccca/videos/PCCCA+Summer+Campers.webm" type="video/webm">
+    <source src="https://s3.amazonaws.com/pccca/videos/PCCCA+Summer+Campers.ogg" type="video/ogg">
+    <source src="https://s3.amazonaws.com/pccca/videos/PCCCA+Summer+Campers.mp4" type="video/mp4">
+  </video>
+</div>
 
-  handler.bounds.extendWith(markers);
-  handler.fitMapToBounds();
-  <%if @hash.size == 1 && @hash.first[:id] == 0%>
-    handler.getMap().setZoom(5);
-  <%end%>
-});
-</script>
+<!--<video playsinline autoplay muted loop id="my-video" class="video">
+  <source src="media/PCCCA Summer Campers.webm" type="video/webm">
+  <source src="media/PCCCA Summer Campers.mp4" type="video/mp4">
+  <source src="media/PCCCA Summer Campers.ogg" type="video/ogg">
+</video>--><!-- /video -->
 
 <script>
   $(document).ready(function() {
@@ -196,20 +106,6 @@ handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
         'NB': {fill: '#9A0001'},
         'PE': {fill: '#9A0001'},
       },
-      'stateSpecificLabelBackingStyles': {
-        'DE': {fill: '#96CA05'},
-        'VT': {fill: '#2C0092'},
-        'NH': {fill: '#2C0092'},
-        'MA': {fill: '#2C0092'},
-        'NJ': {fill: '#2C0092'},
-        'RI': {fill: '#2C0092'},
-        'CT': {fill: '#2C0092'},
-        'DC': {fill: '#96CA05'},
-        'MD': {fill: '#96CA05'},
-      },
-      'labelTextStyles': {
-        fill: "#ffffff",
-      },
       'stateStyles': {
         fill: "#4ECDC4",
         stroke: "#41A59B",
@@ -245,7 +141,7 @@ handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
       // The click action
       click: function(event, data) {
         $('#state').val(data.name);
-        $( "#ReSearchForm" ).submit();
+        $( "#SearchForm" ).submit();
       },
 
       mouseover: function(event, data) {
@@ -254,7 +150,12 @@ handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
       }
     });
   });
+
+  $('video').on('ended', function () {
+    this.load();
+    this.play();
+  });
 </script>
 
 <%=javascript_include_tag 'jquery.usmap'%>
-<%#= link_to 'New Camp', new_camp_path %>
+
