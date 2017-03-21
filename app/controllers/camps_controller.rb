@@ -87,7 +87,7 @@ class CampsController < ApplicationController
       marker.lat address.lat
       marker.lng address.lon
       marker.json({ id: address.id})
-      camp = Camp.find_by address_id: address.id
+      camp = Camp.friendly.find_by address_id: address.id
       marker.infowindow "<a href='camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
     end
 
@@ -101,7 +101,7 @@ class CampsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_camp
-      @camp = Camp.find(params[:id])
+      @camp = Camp.friendly.find(params[:id])
     end
 
     def fix_state
