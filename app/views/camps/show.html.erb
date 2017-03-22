@@ -22,7 +22,7 @@
       <div class="row">
         <div class="col-md-10 col-xs-8">
           <h1 class="camp-title"><%= @camp.name %></h1>
-          <%= @camp.address.try(:city) %>, <%= @camp.address.try(:state) %><br />
+          <h4><%= @camp.address.try(:city) %>, <%= @camp.address.try(:state) %></h4>
         </div>
         <div class="col-md-2 col-xs-4 text-right">
           <%= @camp.pccca_member ? (link_to "#{image_tag('member_pccca.png', {:class => 'pccca'})}".html_safe, 'http://www.pccca.net', :class => "pccca-link") : ''%>
