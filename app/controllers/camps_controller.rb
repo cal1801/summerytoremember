@@ -10,7 +10,7 @@ class CampsController < ApplicationController
   end
 
   def all
-    @camps = Camp.all
+    @camps = Camp.all.order('name')
   end
 
   # GET /camps/1
