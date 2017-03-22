@@ -53,6 +53,13 @@ a:hover {
   text-align: center;
 }
 
+.search-row {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 h1 {
   /*font-family: 'Fjalla One', sans-serif;*/
   color: #007bbc;
@@ -79,6 +86,9 @@ h1 {
 }
 
 @media (max-width: 767px) {
+  .search-row {
+    height: 80vh;
+  }
   .search-prompt {
     font-size: 26px;
   }
