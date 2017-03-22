@@ -463,10 +463,7 @@ a.details:visited, a.details.results:visited {
 /* =============================================================================
   Admin stuff
 ============================================================================= */
-.nav-bar {
-  height: 50px;
-  background: #fff;
-  position: relative;
+.navbar {
   z-index: 10;
 }
 
