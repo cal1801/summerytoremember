@@ -1,8 +1,8 @@
 <% content_for :head do %>
   <meta charset="UTF-8">
   <title>Summer To Remember - Find your perfect summer camp staff job</title>
-  <meta name="description" content="Summer To Remember helps you find your perfect summer camp job at Christian camp and conference centers around the United States and Canada. We list all summer camp positions like counselors, lifeguards, leadership, and more and put you directly in touch with the camp. Where do you want to work this summer?">
-  <meta name="keywords" content="summer,camp,jobs,job,counselor,staff,christian,conference center,conference,center,to,remember,summertoremember,coed,boys,girls"%>
+  <meta name="description" content="Summer To Remember helps you find your perfect summer camp job at Christian camp and conference centers around the United States and Canada. We list all summer camp positions like counselors, lifeguards, leadership, and more and put you directly in touch with the camp. Where do you want to work this summer?" />
+  <meta name="keywords" content="summer,camp,jobs,job,counselor,staff,christian,conference center,conference,center,to,remember,summertoremember,coed,boys,girls" />
 <%end%>
 <div class="content row search-row">
   <div class="col-lg-12">
@@ -15,8 +15,12 @@
     <div class="col-lg-12">
       <h3 id="state_display">Choose A State/Province</h3>
       <div class="row">
+        <div class="col-lg-6 col-lg-offset-3 map-wrap">
+          <div id="pccca_map" style="width: 500px; height: 500px;"></div>
+        </div>
         <div class="col-lg-12">
-          <div id="pccca_map" style="width: 450px; height: 405px;"></div>
+
+          PUT UNITED STATES AND PUT CANADA
           <%=select_tag :sm_state, options_for_select(us_states), :prompt => "Choose A State/Province", :id=> "pccca_state_select", :class=>"form-control" %>
           <%=submit_tag "Search for Camps", :class=>"btn btn-success", :style=>"margin-top: 25px; width: 100%"%>
         </div>
@@ -45,6 +49,20 @@
 
 <script>
   $(document).ready(function() {
+
+    function resizeMap() {
+      var mapWidth = $('.map-wrap').css('width');
+      var svgWidth = $('.map-wrap').width();
+      var mapHeight = svgWidth *1;
+      $('#pccca_map').css('width' , mapWidth).css('height' , mapHeight +'px');
+      $('#pccca_map svg').attr('width' , svgWidth).attr('height' , mapHeight);
+    };
+
+
+   $(window).resize(function() {
+    //resizeMap();
+   });
+
     $('#pccca_map').usmap({
       'showLabels':false,
       'stateSpecificStyles': {
@@ -153,7 +171,25 @@
             .text("I want to work in: "+data.name)
       }
     });
+
+    //resizeMap();
+    msieversion();
   });
+
+  function msieversion() {
+      debugger;
+      var ua = window.navigator.userAgent;
+      var msie = ua.indexOf("MSIE ");
+
+      if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer, return version number
+      {
+        svg = $('#pccca_map').find('svg')[0];
+        svg.setAttribute('viewBox', '800 0 650 550');
+        alert("hi");
+      }
+
+      return false;
+    }
 
   $('video').on('ended', function () {
     this.load();

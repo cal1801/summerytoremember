@@ -14,11 +14,13 @@
   <div class="row form-group" style="text-align: left">
     <div class="col-lg-12">
       <%= f.label :staff_desc %><br />
-      <%= f.text_area :staff_desc, rows: 10, :class => 'col-lg-12 form-control' %>
+
+      LIMIT TO 250 WORDS
+      <%= f.text_area :staff_desc, "Staff Description - This short " rows: 10, :class => 'col-lg-12 form-control' %>
     </div>
     <div class="col-lg-12">
       <%= f.label :staff_url %><br />
-      <%= f.text_field :staff_url, :class => 'col-lg-12 form-control' %>
+      <%= f.text_field :staff_url, "Staff URL" :class => 'col-lg-12 form-control' %>
     </div>
   </div>
 

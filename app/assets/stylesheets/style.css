@@ -113,10 +113,10 @@ h1 {
   SVG
 ============================================================================= */
 
-#pccca_map {
+/*#pccca_map {
   margin-top: -52px;
   margin: 0 auto;
-}
+}*/
 
 svg path {
   transform: translate(-780px, 5px);
@@ -271,11 +271,6 @@ svg path {
 }
 
 /*======= Map ===========*/
-/*.map {
-  overflow: hidden;
-  padding:0 15px;
-}*/
-
 #map
 {
   width:400px;

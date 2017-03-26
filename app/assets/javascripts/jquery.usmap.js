@@ -6,19 +6,19 @@
     for(var i=0; i<getters.length; i++){
       getters_obj[getters[i]] = true;
     }
-  
-    
+
+
     // Create the object
     var Plugin = function(element){
       this.element = element;
     };
     Plugin.prototype = methods;
-    
+
     // Assign the plugin
     $.fn[name] = function(){
       var args = arguments;
       var returnValue = this;
-      
+
       this.each(function() {
         var $this = $(this);
         var plugin = $this.data('plugin-'+name);
@@ -29,7 +29,7 @@
           if(plugin._init){
             plugin._init.apply(plugin, args);
           }
-          
+
         // call a method
         } else if(typeof args[0] == 'string' && args[0].charAt(0) != '_' && typeof plugin[args[0]] == 'function'){
           var methodArgs = Array.prototype.slice.call(args, 1);
@@ -39,17 +39,17 @@
             returnValue = r;
           }
         }
-        
+
       });
-      
+
       return returnValue; // returning the jQuery object
     };
   };
-  
-  
+
+
   // Some constants
   var WIDTH = 650,
-      HEIGHT = 300,
+      HEIGHT = 550,
       LABELS_WIDTH = 0;
 
   // Default options
@@ -62,49 +62,49 @@
       "stroke-linejoin": "round",
       scale: [1, 1]
     },
-    
+
     // The styles for the hover
     'stateHoverStyles': {
       fill: "#33c",
       stroke: "#000",
       scale: [5, 5]
     },
-    
+
     // The time for the animation, set to false to remove the animation
     'stateHoverAnimation': 500,
-    
+
     // State specific styles. 'ST': {}
     'stateSpecificStyles': {},
-    
+
     // State specific hover styles
     'stateSpecificHoverStyles': {},
-    
-    
+
+
     // Events
     'click': null,
-    
+
     'mouseover': null,
-    
+
     'mouseout': null,
-    
+
     'clickState': {},
-    
+
     'mouseoverState': {},
-    
+
     'mouseoutState': {},
-    
-    
+
+
     // Labels
     'showLabels' : true,
-    
+
     'labelWidth': 20,
-    
+
     'labelHeight': 15,
-    
+
     'labelGap' : 6,
-    
+
     'labelRadius' : 3,
-    
+
     'labelBackingStyles': {
       fill: "#333",
       stroke: "#666",
@@ -112,17 +112,17 @@
       "stroke-linejoin": "round",
       scale: [1, 1]
     },
-    
+
     // The styles for the hover
     'labelBackingHoverStyles': {
       fill: "#33c",
       stroke: "#000"
     },
-    
+
     'stateSpecificLabelBackingStyles': {},
-    
+
     'stateSpecificLabelBackingHoverStyles': {},
-    
+
     'labelTextStyles': {
       fill: "#fff",
       'stroke': 'none',
@@ -130,16 +130,16 @@
       'stroke-width': 0,
       'font-size': '10px'
     },
-    
+
     // The styles for the hover
     'labelTextHoverStyles': {},
-    
+
     'stateSpecificLabelTextStyles': {},
-    
+
     'stateSpecificLabelTextHoverStyles': {}
   };
-  
-  
+
+
   // Methods
   var methods = {
     /**
@@ -149,33 +149,33 @@
       // Save the options
       this.options = {};
       $.extend(this.options, defaults, options);
-      
+
       // Save the width and height;
       var width = this.element.width();
       var height = this.element.height();
-      
+
       // Calculate the width and height to match the container while keeping the labels at a fixed size
       var xscale = this.element.width()/WIDTH;
       var yscale = this.element.height()/HEIGHT;
       this.scale = Math.min(xscale, yscale);
       this.labelAreaWidth = Math.ceil(LABELS_WIDTH/this.scale); // The actual width with the labels reversed scaled
-      
+
       var paperWidthWithLabels = WIDTH + Math.max(0, this.labelAreaWidth - LABELS_WIDTH);
       // Create the Raphael instances
       this.paper = Raphael(this.element.get(0), paperWidthWithLabels, HEIGHT);//this.element.width(), this.element.height());
-      
+
       // Scale to fit
       this.paper.setSize(width, height);
       this.paper.setViewBox(0, 0, paperWidthWithLabels, HEIGHT, false);
-      
+
       // Keep track of all the states
       this.stateHitAreas = {}; // transparent for the hit area
       this.stateShapes = {}; // for the visual shape
       this.topShape = null;
-      
+
       // create all the states
       this._initCreateStates();
-      
+
       // create the labels for the smaller states
       this.labelShapes = {};
       this.labelTexts = {};
@@ -183,10 +183,10 @@
       if(this.options.showLabels) {
         this._initCreateLabels();
       }
-      
-      // Add the 
+
+      // Add the
     },
-    
+
     /**
      * Create the state objects
      */
@@ -194,7 +194,7 @@
       // TODO: Dynamic attrs
       var attr = this.options.stateStyles;
       var R = this.paper; // shorter name for usage here
-      
+
       // The coords for each state
       var paths = {
         HI: "M960.5,516.4c-0.4-0.1-1-0.4-1.4-0.5c-0.4-0.2-1.8-0.3-3.2-0.3  c-2.4,0-2.6-0.1-2.7-1.2c-0.1-0.7,0.3-2.2,0.8-3.4c0.5-1.2,0.9-3.2,0.9-4.4c0-2.3,0.5-3,2.1-3.3c0.5-0.1,1.3-0.8,1.8-1.7  c0.5-0.8,1.2-1.5,1.5-1.5c0.6,0,4.8,4.5,4.8,5.2c0,0.3,0.1,0.9,0.2,1.3s0,1.7-0.2,2.8c-0.3,1.5-0.2,2.2,0.3,2.8  c1.6,1.8,0,4.6-2.7,4.6C961.9,516.7,960.9,516.6,960.5,516.4z M956,490.4c-0.7-0.3-1-0.8-1-1.5c0-1.3,2.1-3.7,3-3.5  c0.9,0.2,3,3.9,2.6,4.8C960.4,490.9,957.6,491,956,490.4z M953.2,480.9c-1.3-2-1.3-2.8-0.1-3.4c0.7-0.4,1-0.3,1.6,0.6  c0.4,0.6,0.9,1.9,1,2.8c0.2,1.4,0.1,1.7-0.6,1.6C954.6,482.5,953.8,481.8,953.2,480.9z M946,471.6c-2.5-1.9-2.7-3-0.8-4.9  c1.7-1.7,2.3-1.7,3.9-0.1c1.3,1.3,1.7,4,0.7,5.7C949.2,473.6,948.4,473.5,946,471.6z M935.2,452.4c-1.6-0.6-1.4-3.2,0.4-4.8  c1.7-1.5,1.8-1.5,3.4-0.1c1.4,1.3,1.6,3.5,0.5,4.4C938.6,452.7,936.5,452.9,935.2,452.4z M927.9,447.4c-0.2-0.3,0-0.7,0.3-1  c0.9-0.6,2.5-0.3,2.5,0.5C930.7,447.8,928.4,448.1,927.9,447.4z",
@@ -260,7 +260,7 @@
         SK: "M1026.6,224.5c-0.1-0.1-1.9-0.3-3.9-0.5c-2-0.2-4.2-0.4-4.9-0.5c-0.6-0.1-2.5-0.3-4.2-0.5  c-1.7-0.2-3.5-0.4-4.2-0.5c-0.6-0.1-2.5-0.3-4.2-0.5c-1.7-0.2-8.1-1.5-14.3-2.9c-6.2-1.4-11.6-2.6-12-2.7c-2.1-0.4-3.3-0.7-6-1.4  c-1.7-0.4-3.4-0.8-3.9-0.9c-0.5-0.1-2.5-0.5-4.5-1c-2.9-0.7-3.6-1-3.4-1.6c0.2-0.7,3.9-15.6,4.2-17.2c0.1-0.4,0.8-3.4,1.6-6.7  c0.8-3.3,2.2-9.1,3.1-12.9c0.9-3.8,2.7-11.2,4-16.4c1.3-5.2,2.4-9.9,2.5-10.4c0.1-0.5,0.8-3.5,1.6-6.7c0.8-3.2,2.3-9.7,3.5-14.6  c1.2-4.8,2.8-11.7,3.7-15.3c0.9-3.6,2.3-9.6,3.2-13.5l1.7-7l2.4,0.2c1.3,0.1,3.4,0.4,4.7,0.5c1.2,0.2,3.9,0.2,5.9-0.1  c3.4-0.4,3.7-0.4,6.4,0.8c2.6,1.2,3.7,1.3,3.7,0.3c0-0.5-9.8-5.3-12.3-6c-1-0.3-2.3-0.5-2.9-0.5c-0.6,0-1.5-0.4-2-0.9  c-1-1-2.4-1.2-3.7-0.4c-1.1,0.6-1.1,0.4-0.4-2.8c0.4-1.8,0.7-2.3,1.3-2.1c0.7,0.2,4,0.9,7,1.4c0.6,0.1,1.5,0.3,2,0.4  c1.5,0.3,20.7,4.1,22,4.3c0.6,0.1,3.7,0.7,6.7,1.3c3.1,0.6,6.4,1.2,7.4,1.3c1.8,0.2,1.8,0.2,1.8,1.8c0,0.9-0.6,5.4-1.3,10.1  c-0.7,4.7-1.3,9.6-1.5,10.9c-0.3,2.3-0.8,3.5-1.6,3.5c-0.7,0-3.5,3.1-4.1,4.5c-0.4,1.1-0.5,1.8-0.1,3c1,3.3,0.8,4.9-0.7,6.5  c-1,1.1-1.3,1.7-1.1,2.2c0.3,0.5,0.7,0.4,1.9-0.6c0.8-0.7,1.8-1.2,2.1-1.2c0.7,0,0.7,1.5-0.1,10.6c-0.1,1.4-0.3,4.4-0.5,6.7  c-0.1,2.3-0.4,5.1-0.5,6.2c-0.1,1.1-0.3,4.2-0.5,6.7c-0.2,2.5-0.4,5.4-0.5,6.2s-0.3,3.9-0.5,6.7c-0.2,2.8-0.4,5.6-0.5,6.2  c-0.1,0.6-0.3,3.7-0.5,6.7c-0.2,3.1-0.4,5.9-0.4,6.2c-0.1,0.4-0.3,3.3-0.5,6.5c-0.2,3.2-0.4,6.1-0.5,6.5c-0.1,0.4-0.3,3.3-0.5,6.5  s-0.4,6.2-0.5,6.6c-0.1,0.5-0.2,2.2-0.3,3.8C1027.9,224.4,1027.4,225.3,1026.6,224.5z",
 
       }
-      
+
       // Create the actual objects
       var stateAttr = {};
 
@@ -273,35 +273,35 @@
         }
         this.stateShapes[state] = R.path(paths[state]).attr(stateAttr);
         this.topShape = this.stateShapes[state];
-        
+
         this.stateHitAreas[state] = R.path(paths[state]).attr({fill: "#000",
       "stroke-width": 0, "opacity" : 0.0, 'cursor': 'pointer'});
         this.stateHitAreas[state].node.dataState = state;
       }
-      
+
       // Bind events
       this._onClickProxy = $.proxy(this, '_onClick');
       this._onMouseOverProxy = $.proxy(this, '_onMouseOver'),
       this._onMouseOutProxy = $.proxy(this, '_onMouseOut');
-        
+
       for(var state in this.stateHitAreas) {
         this.stateHitAreas[state].toFront();
         $(this.stateHitAreas[state].node).bind('mouseout', this._onMouseOutProxy);
         $(this.stateHitAreas[state].node).bind('click', this._onClickProxy);
         $(this.stateHitAreas[state].node).bind('mouseover', this._onMouseOverProxy);
-        
+
       }
     },
-    
-    
-    
+
+
+
     /**
      * Create the labels
      */
     _initCreateLabels: function() {
       var R = this.paper; // shorter name for usage here
       var neStates = ['VT', 'NH', 'MA', 'RI', 'CT', 'NJ', 'DE', 'MD', 'DC'];
-      
+
       // calculate the values for placing items
       var neBoxX = 0;
       var neBoxY = 0;
@@ -309,28 +309,28 @@
       var oHeight = this.options.labelHeight;
       var oGap = this.options.labelGap;
       var oRadius = this.options.labelRadius;
-      
+
       var shapeWidth = oWidth/this.scale;
       var shapeHeight = oHeight/this.scale;
-      
+
       var colWidth = (oWidth+oGap)/this.scale;
       var downBy = (oHeight+oGap)/this.scale*0.5;
-      
+
       var shapeRadius = oRadius/this.scale;
-      
+
       // Styling information
       var backingAttr = this.options.labelBackingStyles;
       var textAttr = this.options.labelTextStyles;
       var stateAttr = {};
-      
+
       // NE States
       for(var i=0, x, y, state; i<neStates.length; ++i) {
         state = neStates[i];
-        
+
         // position
         x = ((i+1)%2) * colWidth + neBoxX;
         y = i*downBy + neBoxY;
-        
+
         // attributes for styling the backing
         stateAttr = {};
         if(this.options.stateSpecificLabelBackingStyles[state]) {
@@ -338,10 +338,10 @@
         } else {
           stateAttr = backingAttr;
         }
-        
+
         // add the backing
         this.labelShapes[state] = R.rect(x, y, shapeWidth, shapeHeight, shapeRadius).attr(stateAttr);
-        
+
         // attributes for styling the text
         stateAttr = {};
         if(this.options.stateSpecificLabelTextStyles[state]) {
@@ -349,27 +349,27 @@
         } else {
           $.extend(stateAttr, textAttr);
         }
-        
+
         // adjust font-size
         if(stateAttr['font-size']) {
           stateAttr['font-size'] = (parseInt(stateAttr['font-size'])/this.scale) + 'px';
         }
-        
+
         // add the text
         this.labelTexts[state] = R.text(x+(shapeWidth/2), y+(shapeHeight/2), state).attr(stateAttr);
-        
+
         // Create the hit areas
         this.labelHitAreas[state] = R.rect(x, y, shapeWidth, shapeHeight, shapeRadius).attr({
           fill: "#000",
-          "stroke-width": 0, 
-          "opacity" : 0.0, 
+          "stroke-width": 0,
+          "opacity" : 0.0,
           'cursor': 'pointer'
         });
         this.labelHitAreas[state].node.dataState = state;
       }
-      
-      
-      
+
+
+
       // Bind events
       for(var state in this.labelHitAreas) {
         this.labelHitAreas[state].toFront();
@@ -378,9 +378,9 @@
         $(this.labelHitAreas[state].node).bind('mouseover', this._onMouseOverProxy);
       }
     },
-    
-    
-    
+
+
+
     /**
      * Get the state Raphael object
      */
@@ -389,8 +389,8 @@
       var stateName = (event.target && event.target.dataState) || (event.dataState);
       return this._getState(stateName);
     },
-    
-    
+
+
     /**
      *
      */
@@ -400,35 +400,35 @@
       var labelBacking = this.labelShapes[stateName];
       var labelText = this.labelTexts[stateName];
       var labelHitArea = this.labelHitAreas[stateName]
-      
+
       return {
-        shape: stateShape, 
-        hitArea: stateHitArea, 
-        name: stateName, 
-        labelBacking: labelBacking, 
-        labelText: labelText, 
+        shape: stateShape,
+        hitArea: stateHitArea,
+        name: stateName,
+        labelBacking: labelBacking,
+        labelText: labelText,
         labelHitArea: labelHitArea
       };
     },
-    
-    
-    
+
+
+
     /**
      * The mouseout handler
      */
     _onMouseOut: function(event) {
       var stateData = this._getStateFromEvent(event);
-      
+
       // Stop if no state was found
       if(!stateData.hitArea) {
         return;
       }
-      
+
       return !this._triggerEvent('mouseout', event, stateData);
 
     },
-    
-    
+
+
     /**
      *
      */
@@ -441,57 +441,57 @@
       } else {
         attrs = this.options.stateStyles;
       }
-      
+
       stateData.shape.animate(attrs, this.options.stateHoverAnimation);
-      
-      
+
+
       // ... for the label backing
       if(stateData.labelBacking) {
         var attrs = {};
-        
+
         if(this.options.stateSpecificLabelBackingStyles[stateData.name]) {
           $.extend(attrs, this.options.labelBackingStyles, this.options.stateSpecificLabelBackingStyles[stateData.name]);
         } else {
           attrs = this.options.labelBackingStyles;
         }
-        
+
         stateData.labelBacking.animate(attrs, this.options.stateHoverAnimation);
       }
     },
-    
-    
+
+
     /**
      * The click handler
      */
     _onClick: function(event) {
       var stateData = this._getStateFromEvent(event);
-      
+
       // Stop if no state was found
       if(!stateData.hitArea) {
         return;
       }
-      
+
       return !this._triggerEvent('click', event, stateData);
     },
-    
-    
-    
+
+
+
     /**
      * The mouseover handler
      */
     _onMouseOver: function(event) {
       var stateData = this._getStateFromEvent(event);
-      
+
       // Stop if no state was found
       if(!stateData.hitArea) {
         return;
       }
-      
+
       return !this._triggerEvent('mouseover', event, stateData);
     },
-    
-    
-    
+
+
+
     /**
      * The default on hover action for a state
      */
@@ -499,7 +499,7 @@
       // hover effect
       this.bringShapeToFront(stateData.shape);
       this.paper.safari();
-      
+
       // ... for the state
       var attrs = {};
       if(this.options.stateSpecificHoverStyles[stateData.name]) {
@@ -507,28 +507,28 @@
       } else {
         attrs = this.options.stateHoverStyles;
       }
-      
+
       stateData.shape.animate(attrs, this.options.stateHoverAnimation);
-      
+
       // ... for the label backing
       if(stateData.labelBacking) {
         var attrs = {};
-        
+
         if(this.options.stateSpecificLabelBackingHoverStyles[stateData.name]) {
           $.extend(attrs, this.options.labelBackingHoverStyles, this.options.stateSpecificLabelBackingHoverStyles[stateData.name]);
         } else {
           attrs = this.options.labelBackingHoverStyles;
         }
-        
+
         stateData.labelBacking.animate(attrs, this.options.stateHoverAnimation);
       }
     },
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     /**
      * Trigger events
      *
@@ -541,57 +541,57 @@
     _triggerEvent: function(type, event, stateData) {
       var name = stateData.name;
       var defaultPrevented = false;
-      
+
       // State specific
       var sEvent = $.Event('usmap'+type+name);
       sEvent.originalEvent = event;
-      
+
       // Do the one in options first
       if(this.options[type+'State'][name]) {
         defaultPrevented = this.options[type+'State'][name](sEvent, stateData) === false;
       }
-      
+
       // Then do the bounded ones
       if(sEvent.isPropagationStopped()) {
         this.element.trigger(sEvent, [stateData]);
         defaultPrevented = defaultPrevented || sEvent.isDefaultPrevented();
       }
-      
-      
+
+
       // General
       if(!sEvent.isPropagationStopped()) {
         var gEvent = $.Event('usmap'+type);
         gEvent.originalEvent = event;
-        
+
         // Options handler first
         if(this.options[type]) {
           defaultPrevented = this.options[type](gEvent, stateData) === false || defaultPrevented;
         }
-        
+
         // Bounded options next
         if(!gEvent.isPropagationStopped()) {
           this.element.trigger(gEvent, [stateData]);
           defaultPrevented = defaultPrevented || gEvent.isDefaultPrevented();
         }
       }
-      
+
       // Do the default action
       if(!defaultPrevented) {
         switch(type) {
           case 'mouseover':
             this._defaultMouseOverAction(stateData);
             break;
-          
-          case 'mouseout': 
+
+          case 'mouseout':
             this._defaultMouseOutAction(stateData);
             break;
         }
       }
-      
+
       return !defaultPrevented;
     },
-    
-    
+
+
     /**
      *
       @param string state - The two letter state abbr
@@ -599,13 +599,13 @@
     trigger: function(state, type, event) {
       type = type.replace('usmap', ''); // remove the usmap if they added it
       state = state.toUpperCase(); // ensure state is uppercase to match
-      
+
       var stateData = this._getState(state);
-      
+
       this._triggerEvent(type, event, stateData);
     },
-    
-    
+
+
     /**
      * Bring a state shape to the top of the state shapes, but not above the hit areas
      */
@@ -616,12 +616,12 @@
       this.topShape = shape;
     }
   };
-  
-  
+
+
   // Getters
   var getters = [];
-  
-  
+
+
   // Create the plugin
   jQueryPluginFactory($, 'usmap', methods, getters);
 
