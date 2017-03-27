@@ -1,6 +1,6 @@
 class CampsController < ApplicationController
   before_action :states_var
-  before_action :set_camp, only: [:show, :edit, :update, :destroy]
+  before_action :set_camp, only: [:show, :edit, :update, :destroy, :update_membership]
   before_action :fix_state, only: [:search]
 
   # GET /camps
@@ -55,6 +55,18 @@ class CampsController < ApplicationController
       if @camp.update(camp_params)
         format.html { redirect_to @camp, notice: 'Camp was successfully updated.' }
         format.json { render :show, status: :ok, location: @camp }
+      else
+        format.html { render :edit }
+        format.json { render json: @camp.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_membership
+    respond_to do |format|
+      if @camp.update_column('pccca_member', params[:change_to])
+        format.html { render :nothing => true, json: @camp, notice: 'Camp was successfully updated.' }
+        format.json { render json: @camp, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @camp.errors, status: :unprocessable_entity }
