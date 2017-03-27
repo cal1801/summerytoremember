@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       post 'search'
       get 'all'
     end
+    member do
+      put 'update_membership'
+    end
   end
 
   get 'sitemap.xml', :to => 'sitemap#index', :defaults => { :format => 'xml' }
