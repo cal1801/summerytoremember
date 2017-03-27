@@ -18,8 +18,8 @@
 <%end%>
 
 
-<%if !!notice%><p class="notice btn-success"><%= notice %></p><%end%>
-<%if !!alert%><p class="alert btn-warning"><%= alert %></p><%end%>
+<p class="notice btn-success" style="display: <%=!!notice ? "block" : "none"%>"><%= notice %></p>
+<p class="alert btn-warning" style="display: <%=!!alert ? "block" : "none"%>"><%= alert %></p>
 
 <%= yield %>
 
