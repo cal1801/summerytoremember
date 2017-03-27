@@ -450,7 +450,7 @@ a.details:visited, a.details.results:visited {
   Notification stuff
 ============================================================================= */
 .notice, .alert {
-  position: absolute;
+  position: fixed;
   right: 50px;
   top: 5px;
   padding: 10px;
