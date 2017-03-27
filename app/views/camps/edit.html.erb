@@ -1,6 +1,7 @@
 <div class="content row">
   <div class="col-lg-12" style="text-align: left">
-    <h1 class="mtn edit-heading">Editing - <%=@camp.name%></h1>
+    <h1 class="mtn edit-heading" style="float: left; max-width: 90%">Editing - <%=@camp.name%></h1>
+    <%= link_to 'Cancel', all_camps_path, class:"btn btn-sm btn-danger mts mll", style:"color: white; float: left" %>
   </div>
 
   <div class="col-lg-12">

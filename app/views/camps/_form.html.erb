@@ -13,18 +13,19 @@
 
   <div class="row form-group" style="text-align: left">
     <div class="col-lg-12">
-      <%= f.label :staff_desc %><br />
-
-      LIMIT TO 250 WORDS
-      <%= f.text_area :staff_desc, "Staff Description - This short " rows: 10, :class => 'col-lg-12 form-control' %>
+      <p>Summer To Remember is a tool for helping potential staff find a position with your summer program. We suggest that you keep your description short and to the point (you are limited to 250 words), so potential applicants will click through to your website for more information. For the description in the box below, you can include specifics like dates, positions remaining, and/or the summer theme. Just keep in mind that you will need to login again to make any necessary changes (during this season or before next summer).</p>
+      <%= f.text_area :staff_desc, rows: 10, :class => 'col-lg-12 form-control' %>
     </div>
-    <div class="col-lg-12">
-      <%= f.label :staff_url %><br />
-      <%= f.text_field :staff_url, "Staff URL" :class => 'col-lg-12 form-control' %>
+    <div class="col-lg-12 mtl">
+      <p>For the website URL, we suggest providing a link that takes a visitor straight to your summer staffing page (so they don't have to hunt for it on your website). If your URL doesn't change from year to year (yourcamp.org/summer-staff instead of summerstaff2017), it will keep you from having to login next time to make changes.</p>
+      <%= f.text_field :staff_url, :class => 'col-lg-12 form-control' %>
     </div>
   </div>
 
   <div class="row form-group">
+    <div class="col-lg-12">
+      <p>The three pictures you submit below will be cropped square for your listing (please do not choose panoramic shots). Since this website deals with potential summer staff, it would beneficial if these pictures focused on what your program has to offer. Picture #1 will be the dominant image used with your listing in the directory.</p>
+    </div>
     <%images = @camp.images.select{|i| i.image_type == 's2r'}%>
     <%(0..2).each do |i|%>
       <div class="col-lg-4" style="text-align: left">
@@ -40,7 +41,7 @@
           <%= f.fields_for :images, @camp.images.build do |image_f| %>
             <%= image_f.hidden_field :image_type, :value => "s2r"%>
             <%= image_f.hidden_field :camp_id, :value => @camp.id%>
-            <%= image_f.label :image_url, "Image File" %>
+            <%= image_f.label :image_url, "Picture #{i+1}" %>
             <%= image_f.file_field :image_url, :style=>"form-control"%>
             <div class="actions">
               <%= image_f.submit %>

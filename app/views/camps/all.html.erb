@@ -8,10 +8,11 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <h1 class="mtn">Listing Camps</h1>
+      <h1 class="mtn" style="float: left">Listing Camps</h1>
+      <%=link_to "New Camp", new_camp_path, class:"btn btn-default btn-sm left mll mts"%>
 
       <% @camps.each do |camp| %>
-        <div class="row camp-row">
+        <div class="row camp-row" style="clear: both">
           <div class="col-sm-5 camp-name">
             <%= camp.name%><br />
           </div>

@@ -516,3 +516,15 @@ a.details:visited, a.details.results:visited {
 .mtn {
   margin-top: 0;
 }
+
+.mts {
+  margin-top: 5px;
+}
+
+.mll {
+  margin-left: 15px;
+}
+
+.mtl {
+  margin-top: 15px;
+}
