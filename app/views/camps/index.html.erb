@@ -175,13 +175,6 @@
 
     //resizeMap();
     msieversion();
-
-    var jqueryVideo = $("#background-video");
-    jqueryVideo.on("ended", function() {
-      alert('This Does Work!');
-      //this.load();
-      //this.play();
-    });
   });
 
   function msieversion() {
@@ -192,7 +185,6 @@
     {
       svg = $('#pccca_map').find('svg')[0];
       svg.setAttribute('viewBox', '800 0 650 550');
-      alert("hi");
     }
 
     return false;
