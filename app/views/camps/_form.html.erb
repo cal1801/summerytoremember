@@ -11,6 +11,47 @@
     </div>
   <% end %>
 
+  <%if current_user.admin?%>
+    <div class="row form-group" style="text-align: left">
+      <div class="col-lg-8">
+        <%=f.label :name%>
+        <%=f.text_field :name, :class => 'col-lg-12 form-control'%>
+      </div>
+      <div class="col-lg-4 mtsl">
+        <%=f.label :pccca_member, "PCCCA Memeber", class:"mrl"%>
+        <%=f.check_box :pccca_member%>
+      </div>
+    </div>
+
+    <%=f.fields_for :address do |a|%>
+      <%=a.hidden_field :id%>
+      <div class="row form-group" style="text-align: left">
+        <div class="col-lg-6">
+          <%= a.label :address %><br />
+          <%= a.text_field :address, :class => 'col-lg-12 form-control' %>
+        </div>
+        <div class="col-lg-6">
+          <%= a.label :address2 %><br />
+          <%= a.text_field :address2, :class => 'col-lg-12 form-control' %>
+        </div>
+        <div class="col-lg-6">
+          <%= a.label :city %><br />
+          <%= a.text_field :city, :class => 'col-lg-12 form-control' %>
+        </div>
+        <div class="col-lg-3">
+          <%= a.label :state %><br />
+          <%= a.select :state, grouped_options_for_select(us_states), {:prompt => "Choose A State/Province"}, {:class=>"form-control"} %>
+          <%#= a.text_field :state, :class => 'col-lg-12 form-control' %>
+        </div>
+        <div class="col-lg-3">
+          <%= a.label :zip %><br />
+          <%= a.text_field :zip, :class => 'col-lg-12 form-control' %>
+        </div>
+      </div>
+    <%end%>
+
+  <%end%>
+
   <div class="row form-group" style="text-align: left">
     <div class="col-lg-12">
       <p>Summer To Remember is a tool for helping potential staff find a position with your summer program. We suggest that you keep your description short and to the point (you are limited to 250 words), so potential applicants will click through to your website for more information. For the description in the box below, you can include specifics like dates, positions remaining, and/or the summer theme. Just keep in mind that you will need to login again to make any necessary changes (during this season or before next summer).</p>
@@ -22,7 +63,7 @@
     </div>
   </div>
 
-  <div class="row form-group">
+  <div class="row form-group" style="text-align: left">
     <div class="col-lg-12">
       <p>The three pictures you submit below will be cropped square for your listing (please do not choose panoramic shots). Since this website deals with potential summer staff, it would beneficial if these pictures focused on what your program has to offer. Picture #1 will be the dominant image used with your listing in the directory.</p>
     </div>

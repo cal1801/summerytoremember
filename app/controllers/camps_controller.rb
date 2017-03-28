@@ -21,7 +21,8 @@ class CampsController < ApplicationController
   # GET /camps/new
   def new
     @camp = Camp.new
-    3.times {@camp.images.build}
+    @camp.build_address
+    #3.times {@camp.images.build}
   end
 
   # GET /camps/1/edit
@@ -36,7 +37,6 @@ class CampsController < ApplicationController
   # POST /camps.json
   def create
     @camp = Camp.new(camp_params)
-
     respond_to do |format|
       if @camp.save
         format.html { redirect_to @camp, notice: 'Camp was successfully created.' }
@@ -79,7 +79,7 @@ class CampsController < ApplicationController
   def destroy
     @camp.destroy
     respond_to do |format|
-      format.html { redirect_to camps_url, notice: 'Camp was successfully destroyed.' }
+      format.html { redirect_to all_camps_url, notice: 'Camp was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -96,17 +96,17 @@ class CampsController < ApplicationController
 
     addresses.uniq
 
-    @camps = Camp.where('address_id IN (?)', addresses.map(&:id)).sort_by{|c| addresses.map(&:id).index c.address_id}
+    @camps = addresses.map{|a| a.camp}.sort_by{|c| addresses.map(&:id)}
 
     farther_addresses = Address.near("#{params[:state]}, #{@country}", 300).order("distance")
-    @farther_camps = Camp.where('address_id IN (?)', farther_addresses.map(&:id)).sort_by{|c| farther_addresses.map(&:id).index c.address_id} - @camps
+    @farther_camps = farther_addresses.map{|a| a.camp}.sort_by{|c| farther_addresses.map(&:id)} - @camps
 
     all_addresses = addresses + farther_addresses
     @hash = Gmaps4rails.build_markers(all_addresses) do |address, marker|
       marker.lat address.lat
       marker.lng address.lon
       marker.json({ id: address.id})
-      camp = Camp.friendly.find_by address_id: address.id
+      camp = address.camp
       marker.infowindow "<a href='/camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
     end
 
@@ -203,6 +203,6 @@ class CampsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def camp_params
       params[:camp][:images_attributes].delete_if{|k,v| v[:image_url].nil?}
-      params.require(:camp).permit(:name, :address_id, :contact_id, :web_url, :pccca_member, :site_setup_id, :staff_desc, :staff_url, images_attributes: [:image_url, :image_type, :camp_id])
+      params.require(:camp).permit(:name, :contact_id, :web_url, :pccca_member, :site_setup_id, :staff_desc, :staff_url, images_attributes: [:image_url, :image_type, :camp_id], address_attributes: [:address, :address2, :city, :state, :zip, :camp_id])
     end
 end
