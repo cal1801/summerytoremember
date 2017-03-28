@@ -90,11 +90,12 @@ class CampsController < ApplicationController
     state = @states.select{|state, abv| state.upcase == params[:state].upcase}
     word = state.empty? ? params[:state] : state[0][1]
 
-    Address.where(state: word.upcase).each do |address|
+    (Address.where(state: word.upcase) - addresses).each do |address|
       addresses << address
     end
 
-    addresses.uniq
+    #addresses.uniq
+
 
     @camps = addresses.map{|a| a.camp}.sort_by{|c| addresses.map(&:id)}
 
