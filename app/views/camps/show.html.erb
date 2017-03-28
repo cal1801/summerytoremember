@@ -21,7 +21,9 @@
     <div class="col-xs-12 camp-container">
       <div class="row">
         <div class="col-md-10 col-xs-8">
-          <h1 class="camp-title"><%= @camp.name %></h1>
+          <h1 class="camp-title" style="<%='float: left' if current_user.try(:admin)%>"><%= @camp.name %></h1>
+          <%=link_to "Edit Camp", edit_camp_path(@camp), class:"btn btn-default btn-sm mll mtxl" if current_user.try(:admin)%>
+          <%='<div style="clear:both"></div>'.html_safe if current_user.try(:admin)%>
           <h4><%= @camp.address.try(:city) %>, <%= @camp.address.try(:state) %></h4>
         </div>
         <div class="col-md-2 col-xs-4 text-right">
