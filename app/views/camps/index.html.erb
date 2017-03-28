@@ -10,7 +10,7 @@
     <h1 class="search-prompt">Where do you want to work this summer?</h1>
 
     <%=form_tag search_camps_path, :id => 'SearchForm', :method => 'post' do %>
-      <h3 id="state_display" style="text-align: center;">Choose A State/Province</h3>
+      <h3 id="state_display" style="text-align: center;">Find Christian camps by choosing a state or province</h3>
       <div class="map-wrap" style="width: 500px; margin: 0 auto;">
         <div id="pccca_map" style="width: 600px; height: 500px;"></div>
       </div>
@@ -159,7 +159,7 @@
 
       mouseover: function(event, data) {
           $('#state_display')
-            .text("I want to work in: "+data.name)
+            .text("I want to work at a Christian camp or conference center in: "+data.name)
       }
     });
 
