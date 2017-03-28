@@ -5,6 +5,10 @@ body {
   background-color: #1db0bc;
 }
 
+body, html {
+  height: 100%;
+}
+
 body, h1, h2, h3, h4, h5, h6, .btn {
   font-family: 'Montserrat', sans-serif;
 }
@@ -279,6 +283,10 @@ svg path {
   margin-bottom:0.93em;
 }
 
+.map-wrap {
+  margin-top: -30px;
+}
+
 @media (max-width: 767px) {
   .results-text {
     padding-left: 15px;
@@ -527,4 +535,12 @@ a.details:visited, a.details.results:visited {
 
 .mtl {
   margin-top: 15px;
+}
+
+.mtsl {
+  margin-top: 30px;
+}
+
+.mrl {
+  margin-right: 15px;
 }
