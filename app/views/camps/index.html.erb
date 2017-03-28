@@ -4,19 +4,21 @@
   <meta name="description" content="Summer To Remember helps you find your perfect summer camp job at Christian camp and conference centers around the United States and Canada. We list all summer camp positions like counselors, lifeguards, leadership, and more and put you directly in touch with the camp. Where do you want to work this summer?" />
   <meta name="keywords" content="summer,camp,jobs,job,counselor,staff,christian,conference center,conference,center,to,remember,summertoremember,coed,boys,girls" />
 <%end%>
-<div class="content search-row" style="<%='margin-top: 72px' if user_signed_in?%>">
-  <%=image_tag 's2r', class:"mtl", style:"position: relative;max-height: 25vh;"%>
-  <h1 class="search-prompt">Where do you want to work this summer?</h1>
+<div class="content search-row row" style="<%='margin-top: 72px' if user_signed_in?%>">
+  <div class="col-lg-12">
+    <%=image_tag 's2r', class:"mtl", style:"position: relative;max-height: 25vh;"%>
+    <h1 class="search-prompt">Where do you want to work this summer?</h1>
 
-  <%=form_tag search_camps_path, :id => 'SearchForm', :method => 'post' do %>
-    <h3 id="state_display" style="text-align: center;">Choose A State/Province</h3>
-    <div class="map-wrap" style="width: 500px; margin: 0 auto;">
-      <div id="pccca_map" style="width: 600px; height: 500px;"></div>
-    </div>
-    <%=select_tag :sm_state, grouped_options_for_select(us_states), :prompt => "Choose A State/Province", :id=> "pccca_state_select", :class=>"form-control" %>
-    <%=submit_tag "Search for Camps", :class=>"btn btn-success", :style=>"margin-top: 25px; width: 100%"%>
-    <%=hidden_field_tag 'state'%>
-  <%end%>
+    <%=form_tag search_camps_path, :id => 'SearchForm', :method => 'post' do %>
+      <h3 id="state_display" style="text-align: center;">Choose A State/Province</h3>
+      <div class="map-wrap" style="width: 500px; margin: 0 auto;">
+        <div id="pccca_map" style="width: 600px; height: 500px;"></div>
+      </div>
+      <%=select_tag :sm_state, grouped_options_for_select(us_states), :prompt => "Choose A State/Province", :id=> "pccca_state_select", :class=>"form-control" %>
+      <%=submit_tag "Search for Camps", :class=>"btn btn-success", :style=>"margin-top: 25px; width: 100%"%>
+      <%=hidden_field_tag 'state'%>
+    <%end%>
+  </div>
 </div>
 
 <div class="overlay"></div>
