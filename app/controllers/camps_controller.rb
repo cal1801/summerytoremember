@@ -107,7 +107,7 @@ class CampsController < ApplicationController
       marker.lng address.lon
       marker.json({ id: address.id})
       camp = Camp.friendly.find_by address_id: address.id
-      marker.infowindow "<a href='camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
+      marker.infowindow "<a href='/camps/#{camp.id}' class='infowindow-link'>#{camp.name}<br/>#{address.city}, #{address.state}</a>"
     end
 
     if @hash.empty?
