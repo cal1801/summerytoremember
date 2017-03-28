@@ -492,7 +492,10 @@ a.details:visited, a.details.results:visited {
   Admin stuff
 ============================================================================= */
 .navbar {
+  position: fixed;
+  top: 0;
   z-index: 10;
+  width: 100%;
 }
 
 .sign-out {

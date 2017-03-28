@@ -16,7 +16,7 @@
   </div>
 </div><!--end top-bar-->
 
-<div class="container results">
+<div class="container results" style="<%='margin-top: 250px' if user_signed_in?%>">
   <div class="row">
     <div class="col-lg-8">
       <%if !(@camps.empty? && @farther_camps.empty?)%>
@@ -81,7 +81,7 @@
         </div>
       <%else%>
         <h2 class="results-text">No camps found. Please try searching again.</h2>
-        <%=form_tag camps_path, :id => 'ReSearchForm', :class => "row", :method => 'get' do %>
+        <%=form_tag search_camps_path, :id => 'ReSearchForm', :class => "row", :method => 'post' do %>
           <h3 id="state_display">Choose A State</h3>
           <div class="row">
             <div class="col-lg-12">
