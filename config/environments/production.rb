@@ -79,6 +79,7 @@ Rails.application.configure do
 
   # devise
   config.action_mailer.default_url_options = { host: 'www.summertoremember.com' }
+  config.action_mailer.asset_host = "http://www.summertoremember.com"
   config.assets.initialize_on_precompile = false
 
   #S3 server settings
