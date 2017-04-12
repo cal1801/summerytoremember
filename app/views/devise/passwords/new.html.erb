@@ -15,10 +15,19 @@
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
       <%= devise_error_messages! %>
 
+      <%select_hash = {}%>
+      <%Camp.all.order(:name).each do |camp|%>
+        <%select_hash[camp.name] = camp.try(:contact).try(:email)%>
+      <%end%>
+
       <div class="form-group">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, :class=>"form-control"%>
+        <%= label_tag "Camps"%><br />
+        <%= select_tag "camp", options_from_collection_for_select(select_hash, :last, :first), :class => "form-control"%>
       </div>
+
+      <div id="email_text" class="form-group" style="display: none;">The email address for your center is: <br/><br/><b><span id="email_field"></span></b><br/><br/> If you need to change this, please contact Joel Winchip</div>
+
+      <%= f.hidden_field :email%>
 
       <div class="form-group">
         <%= f.submit "Send me password instructions", class:"btn btn-success", style:"margin-left: 0; display: block" %>
@@ -28,3 +37,11 @@
     <%= render "devise/shared/links" %>
   </div>
 </div>
+
+<script>
+  $("#camp").change(function() {
+    $("#email_text").show();
+    $("#email_field").html($(this).val());
+    $("#user_email").val($(this).val());
+  })
+</script>
