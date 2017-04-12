@@ -13,15 +13,20 @@
 
   <%if current_user.admin?%>
     <div class="row form-group" style="text-align: left">
-      <div class="col-lg-8">
+      <div class="col-lg-5">
         <%=f.label :name%>
         <%=f.text_field :name, :class => 'col-lg-12 form-control'%>
       </div>
-      <div class="col-lg-4 mtsl">
+      <div class="col-lg-4">
+        <%=label_tag :email%>
+        <%=email_field_tag :email, @camp.contact.email, :class => 'col-lg-12 form-control'%>
+      </div>
+      <div class="col-lg-3 mtsl">
         <%=f.label :pccca_member, "PCCCA Memeber", class:"mrl"%>
         <%=f.check_box :pccca_member%>
       </div>
     </div>
+
 
     <%=f.fields_for :address do |a|%>
       <%=a.hidden_field :id%>
@@ -62,6 +67,14 @@
       <%= f.text_field :staff_url, :class => 'col-lg-12 form-control' %>
     </div>
   </div>
+
+  <div class="row form-group" style="text-align: left">
+    <div class="col-lg-12">
+      <p>This is the email that is assigned to your camp to login to Summer To Remember. When you edit this email address, it will alter the email address you will use to log into your account, however the password will stay the same.</p>
+      <%=email_field_tag :email, @camp.contact.email, :class => 'col-lg-12 form-control'%>
+    </div>
+  </div>
+
   <%if @camp.pccca_member?%>
     <div class="row form-group" style="text-align: left">
       <div class="col-lg-12">

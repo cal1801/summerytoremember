@@ -51,6 +51,9 @@ class CampsController < ApplicationController
   # PATCH/PUT /camps/1
   # PATCH/PUT /camps/1.json
   def update
+    user = User.find_by_email @camp.contact.email
+    user.update_column("email",params[:email])
+    @camp.contact.update_column("email",params[:email])
     respond_to do |format|
       if @camp.update(camp_params)
         format.html { redirect_to @camp, notice: 'Camp was successfully updated.' }
