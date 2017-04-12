@@ -62,36 +62,37 @@
       <%= f.text_field :staff_url, :class => 'col-lg-12 form-control' %>
     </div>
   </div>
-
-  <div class="row form-group" style="text-align: left">
-    <div class="col-lg-12">
-      <p>The three pictures you submit below will be cropped square for your listing (please do not choose panoramic shots). Since this website deals with potential summer staff, it would beneficial if these pictures focused on what your program has to offer. Picture #1 will be the dominant image used with your listing in the directory.</p>
-    </div>
-    <%images = @camp.images.select{|i| i.image_type == 's2r'}%>
-    <%(0..2).each do |i|%>
-      <div class="col-lg-4" style="text-align: left">
-        <%if images[i].present?%>
-          <%=image_tag images[i].image_url(:medium)%><br/>
-          <div class="row">
-            <div class="col-lg-12">
-              <%=link_to "Delete", images[i], :method => "delete"%>
-            </div>
-          </div>
-        <%else%>
-          <%image = Image.new%>
-          <%= f.fields_for :images, @camp.images.build do |image_f| %>
-            <%= image_f.hidden_field :image_type, :value => "s2r"%>
-            <%= image_f.hidden_field :camp_id, :value => @camp.id%>
-            <%= image_f.label :image_url, "Picture #{i+1}" %>
-            <%= image_f.file_field :image_url, :style=>"form-control"%>
-            <div class="actions">
-              <%= image_f.submit %>
-            </div>
-          <% end %>
-        <%end%>
+  <%if @camp.pccca_member?%>
+    <div class="row form-group" style="text-align: left">
+      <div class="col-lg-12">
+        <p>The three pictures you submit below will be automatically cropped square for your listing (please do not choose panoramic shots). To have more control over the cropping please edit the photo to be square before uploading. Since this website deals with potential summer staff, it would beneficial if these pictures focused on what your program has to offer. Picture #1 will be the dominant image used with your listing in the directory.</p>
       </div>
-    <%end%>
-  </div>
+      <%images = @camp.images.select{|i| i.image_type == 's2r'}%>
+      <%(0..2).each do |i|%>
+        <div class="col-lg-4" style="text-align: left">
+          <%if images[i].present?%>
+            <%=image_tag images[i].image_url(:medium)%><br/>
+            <div class="row">
+              <div class="col-lg-12">
+                <%=link_to "Delete", images[i], :method => "delete"%>
+              </div>
+            </div>
+          <%else%>
+            <%image = Image.new%>
+            <%= f.fields_for :images, @camp.images.build do |image_f| %>
+              <%= image_f.hidden_field :image_type, :value => "s2r"%>
+              <%= image_f.hidden_field :camp_id, :value => @camp.id%>
+              <%= image_f.label :image_url, "Picture #{i+1}" %>
+              <%= image_f.file_field :image_url, :style=>"form-control"%>
+              <div class="actions">
+                <%= image_f.submit %>
+              </div>
+            <% end %>
+          <%end%>
+        </div>
+      <%end%>
+    </div>
+  <%end%>
 
   <div class="row form-group">
     <div class="col-lg-12">

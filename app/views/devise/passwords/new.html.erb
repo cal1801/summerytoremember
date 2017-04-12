@@ -22,7 +22,7 @@
 
       <div class="form-group">
         <%= label_tag "Camps"%><br />
-        <%= select_tag "camp", options_from_collection_for_select(select_hash, :last, :first), :class => "form-control"%>
+        <%= select_tag "camp", options_from_collection_for_select(select_hash, :last, :first), :prompt => "Select your center", :class => "form-control"%>
       </div>
 
       <div id="email_text" class="form-group" style="display: none;">The email address for your center is: <br/><br/><b><span id="email_field"></span></b><br/><br/> If you need to change this, please contact Joel Winchip</div>
