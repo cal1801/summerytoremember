@@ -45,7 +45,6 @@
         </div>
         <div class="col-lg-3">
           <%= a.label :state %><br />
-          <%debugger%>
           <%= a.select :state, grouped_options_for_select(us_states, @camp.address.state), {:prompt => "Choose A State/Province"}, {:class=>"form-control"} %>
           <%#= a.text_field :state, :class => 'col-lg-12 form-control' %>
         </div>
