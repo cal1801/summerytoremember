@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     collection do
       post 'search'
       get 'all'
+      get 'site_index'
     end
     member do
       put 'update_membership'
