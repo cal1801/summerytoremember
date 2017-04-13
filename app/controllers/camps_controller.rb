@@ -51,9 +51,15 @@ class CampsController < ApplicationController
   # PATCH/PUT /camps/1
   # PATCH/PUT /camps/1.json
   def update
-    user = User.find_by_email @camp.contact.email
-    user.update_column("email",params[:email])
-    @camp.contact.update_column("email",params[:email])
+    user = User.find_by_email @camp.contact.try(:email)
+    if user.nil?
+      contact = Contact.create(f_name:"Camp", l_name:"Contact",email:params[:email])
+      @camp.update_column("contact_id", contact.id)
+      User.create(email:params[:email], password:"pccca_2017")
+    else
+      user.update_column("email",params[:email])
+      @camp.contact.update_column("email",params[:email])
+    end
     respond_to do |format|
       if @camp.update(camp_params)
         format.html { redirect_to @camp, notice: 'Camp was successfully updated.' }
@@ -206,7 +212,7 @@ class CampsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def camp_params
-      params[:camp][:images_attributes].delete_if{|k,v| v[:image_url].nil?}
+      params[:camp][:images_attributes].delete_if{|k,v| v[:image_url].nil?} unless params[:camp][:images_attributes].nil?
       params.require(:camp).permit(:name, :contact_id, :web_url, :pccca_member, :site_setup_id, :staff_desc, :staff_url, images_attributes: [:image_url, :image_type, :camp_id], address_attributes: [:address, :address2, :city, :state, :zip, :camp_id])
     end
 end
