@@ -60,6 +60,11 @@
   <div class="row form-group" style="text-align: left">
     <div class="col-lg-12">
       <p>Summer To Remember is a tool for helping potential staff find a position with your summer program. We suggest that you keep your description short and to the point (you are limited to 250 words), so potential applicants will click through to your website for more information. For the description in the box below, you can include specifics like dates, positions remaining, and/or the summer theme. Just keep in mind that you will need to login again to make any necessary changes (during this season or before next summer).</p>
+
+      <%if @camp.staff_desc.nil?%>
+        <p><b><em>If you have text that is showing up on your listing, that isn't here in the edit area, its because the system is using default text from the Book A Retreat website. When you fill in your description here it will show on your page.</em></b></p>
+      <%end%>
+
       <%= f.text_area :staff_desc, rows: 10, :class => 'col-lg-12 form-control' %>
     </div>
     <div class="col-lg-12 mtl">
@@ -81,6 +86,10 @@
     <div class="row form-group" style="text-align: left">
       <div class="col-lg-12">
         <p>The three pictures you submit below will be automatically cropped square for your listing (please do not choose panoramic shots). To have more control over the cropping please edit the photo to be square before uploading. Since this website deals with potential summer staff, it would beneficial if these pictures focused on what your program has to offer. Picture #1 will be the dominant image used with your listing in the directory.</p>
+
+        <%if @camp.images.select{|i| i.image_type == 's2r'}.count < 3%>
+          <p><b><em>If you have images that are showing up on your listing, that isn't here in the edit area, its because the system is using default images from the Book A Retreat website. When you add images here it will show on your page.</em></b></p>
+        <%end%>
       </div>
       <%images = @camp.images.select{|i| i.image_type == 's2r'}%>
       <%(0..2).each do |i|%>
