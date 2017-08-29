@@ -111,6 +111,10 @@ class CampsController < ApplicationController
     farther_addresses = Address.near("#{params[:state]}, #{@country}", 300).order("distance")
     @farther_camps = farther_addresses.map{|a| a.camp}.sort_by{|c| farther_addresses.map(&:id)} - @camps
 
+    @camps.select!{|c| c.str}
+
+    @farther_camps.select!{|c| c.str}
+
     all_addresses = addresses + farther_addresses
     @hash = Gmaps4rails.build_markers(all_addresses) do |address, marker|
       marker.lat address.lat
