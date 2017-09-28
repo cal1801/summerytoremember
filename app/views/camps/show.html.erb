@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="col-xs-12 camp-container">
-      <%info = @camp.staff_desc.blank? ? CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').first.description.try(:html_safe) : @camp.staff_desc.html_safe%>
+      <%info = @camp.staff_desc.blank? ? CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').empty? ? "" : CampInfo.where(camp_id: @camp.id, camp_type: 'pccca').first.description.try(:html_safe) : @camp.staff_desc.html_safe%>
       <p class="description"><%=info%></p>
     </div>
     <div class="col-xs-12 camp-container">
