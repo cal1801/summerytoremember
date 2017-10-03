@@ -99,7 +99,7 @@ h1 {
   input {
     font-size: 15px;
   }
-  #pccca_map, #state_display {
+  #pccca_map {
     display: none;
   }
 }
